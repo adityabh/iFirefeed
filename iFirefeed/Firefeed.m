@@ -145,8 +145,12 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     NSLog(@"End outstanding observers");
 }
 
-- (BOOL) userIsLoggedInUser:(NSString *)userId {
+/*- (BOOL) userIsLoggedInUser:(NSString *)userId {
     return self.loggedInUser && [userId isEqualToString:self.loggedInUser.userId];
+}*/
+
+- (FirefeedSearch *) searchAdapter {
+    return [[FirefeedSearch alloc] initWithRef:self.root];
 }
 
 - (void) login {

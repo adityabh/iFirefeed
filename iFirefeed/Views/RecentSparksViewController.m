@@ -7,6 +7,7 @@
 //
 
 #import "RecentSparksViewController.h"
+#import "UserSearchViewController.h"
 
 @implementation RecentSparksViewController
 
@@ -22,10 +23,21 @@
 - (void) showLoggedOutUI {
     UIBarButtonItem* loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStylePlain target:self action:@selector(tryLogin)];
     self.navigationItem.rightBarButtonItem = loginButton;
-    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItem = [self leftBarButton];
     [[self.tabBarController.tabBar.items objectAtIndex:0] setEnabled:NO];
     [[self.tabBarController.tabBar.items objectAtIndex:1] setEnabled:NO];
     self.currentFeedId = [self.firefeed observeLatestSparks];
+}
+
+- (UIBarButtonItem *) leftBarButton {
+    return [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(startSearch)];
+}
+
+- (void) startSearch {
+    UserSearchViewController* searchController = [[UserSearchViewController alloc] initWithNibName:nil bundle:nil];
+    searchController.firefeedSearch = [self.firefeed searchAdapter];
+    [self.navigationController pushViewController:searchController animated:YES];
+    [self hideTabBar:self.tabBarController];
 }
 
 - (void) showLoggedInUI {

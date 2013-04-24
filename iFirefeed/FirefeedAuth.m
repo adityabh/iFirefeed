@@ -44,9 +44,12 @@ typedef void (^ffbt_void_void)(void);
             }
         }];
         _blocks = [[NSMutableDictionary alloc] init];
-        //SEL hiddenInit = NSSelectorFromString(@"initWithRef:andApiHost:");
-        //_authClient = [[FirebaseAuthClient alloc] performSelector:hiddenInit withObject:_ref withObject:@"http://localhost:12000"];
+#ifdef _FB_DEBUG
+        SEL hiddenInit = NSSelectorFromString(@"initWithRef:andApiHost:");
+        _authClient = [[FirebaseAuthClient alloc] performSelector:hiddenInit withObject:_ref withObject:@"http://localhost:12000"];
+#else
         _authClient = [[FirebaseAuthClient alloc] initWithRef:_ref];
+#endif
     }
     return self;
 }

@@ -9,14 +9,17 @@
 #import "ProfileEditController.h"
 #import "ComposeViewController.h"
 #import "Firefeed.h"
+#import "FirefeedAuth.h"
 
 typedef enum {BIO, LOCATION, NONE} UserProperty;
 
 @interface ProfileEditController () <FirefeedDelegate, ComposeViewControllerDelegate>
 
+@property (strong, nonatomic) UIColor* brownColor;
 @property (strong, nonatomic) Firefeed* firefeed;
 @property (strong, nonatomic) FirefeedUser* user;
 @property (nonatomic) UserProperty currentlyEditing;
+@property (strong, nonatomic) UIView* lineView;
 
 @end
 
@@ -25,6 +28,7 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.brownColor = [UIColor colorWithRed:0x7b / 255.0f green:0x5f / 255.0f blue:0x11 / 255.0f alpha:1.0f];
         self.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Edit Profile" image:[UIImage imageNamed:@"edit.png"] tag:0];
         self.firefeed = [[Firefeed alloc] initWithUrl:kFirebaseRoot];
         self.firefeed.delegate = self;
@@ -36,10 +40,10 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
 - (UINavigationItem *) navigationItem {
     UINavigationItem* item = [super navigationItem];
     UIBarButtonItem* logoutBtn = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
-    item.leftBarButtonItem = logoutBtn;
+    item.rightBarButtonItem = logoutBtn;
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 44.0f)];
     titleLabel.text = @"Profile";
-    titleLabel.textColor = [UIColor colorWithRed:0x7b / 255.0f green:0x5f / 255.0f blue:0x11 / 255.0f alpha:1.0f];
+    titleLabel.textColor = self.brownColor;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     item.titleView = titleLabel;
@@ -55,6 +59,19 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
     [self.locationEdit addTarget:self action:@selector(composeLocation) forControlEvents:UIControlEventTouchUpInside];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    CGRect viewFrame = self.view.frame;
+
+    if (!CGRectEqualToRect(self.view.frame, self.scrollView.frame)) {
+        [self resizeViews];
+    }
+
+    CGRect textFrame = self.aboutText.frame;
+    CGFloat aboutBottom = textFrame.origin.y + textFrame.size.height;
+
+    CGSize scrollSize = CGSizeMake(viewFrame.size.width, MAX(viewFrame.size.height, aboutBottom + 5.0f));
+    self.scrollView.contentSize = scrollSize;
+}
 
 - (void) logout {
     [self.firefeed logout];
@@ -62,7 +79,7 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
 
 - (void) updateUserDetails {
     self.bioText.text = self.user.bio;
-    self.locationLabel.text = self.user.location;
+    self.locationText.text = self.user.location;
 }
 
 - (void) composeBio {
@@ -99,7 +116,41 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    CGRect viewFrame = self.view.frame;
+
+    self.scrollView.frame = viewFrame;
+
+    CGRect locationTextFrame = self.locationText.frame;
+    CGFloat locationBottom = locationTextFrame.origin.y + locationTextFrame.size.height;
+    CGRect lineRect = CGRectMake(0, locationBottom + 15, self.view.frame.size.width, 1.0f);
+    self.lineView = [[UIView alloc] initWithFrame:lineRect];
+    self.lineView.backgroundColor = self.brownColor;
+    [self.scrollView addSubview:self.lineView];
+
+    [self resizeViews];
     [self showLoggedInUI];
+}
+
+- (void) resizeViews {
+    self.scrollView.frame = self.view.frame;
+
+    CGRect lineFrame = self.lineView.frame;
+    lineFrame.size.width = self.view.frame.size.width;
+    self.lineView.frame = lineFrame;
+
+    CGRect locationTextFrame = self.locationText.frame;
+    CGFloat locationBottom = locationTextFrame.origin.y + locationTextFrame.size.height;
+    CGRect aboutRect = self.aboutLabel.frame;
+    aboutRect.origin.y = locationBottom + 26;
+    self.aboutLabel.frame = aboutRect;
+
+    CGRect textFrame = self.aboutText.frame;
+    textFrame.size.width = self.view.frame.size.width - 12;
+    self.aboutText.frame = textFrame;
+    [self.aboutText sizeToFit];
+    textFrame = self.aboutText.frame;
+    textFrame.origin.y = aboutRect.origin.y + aboutRect.size.height;
+    self.aboutText.frame = textFrame;
 }
 
 - (void) loginStateDidChange:(FirefeedUser *)user {

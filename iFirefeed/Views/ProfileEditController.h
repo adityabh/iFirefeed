@@ -15,5 +15,8 @@
 @property (weak, nonatomic) IBOutlet MOGlassButton *locationEdit;
 
 @property (weak, nonatomic) IBOutlet UITextView *bioText;
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UITextView *locationText;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UILabel *aboutLabel;
+@property (weak, nonatomic) IBOutlet UITextView *aboutText;
 @end

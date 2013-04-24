@@ -10,6 +10,7 @@
 #import "SparkCell.h"
 #import "UserCell.h"
 #import "UIImageView+WebCache.h"
+#import "FirefeedAuth.h"
 
 @interface ProfileViewController () <FirefeedDelegate, UITabBarDelegate, UITableViewDelegate>
 
@@ -54,7 +55,8 @@
     self.bioTextView.frame = CGRectMake(104, 32, 216, 74);
     self.bioTextView.contentInset = UIEdgeInsetsMake(-9, -3, 0, 0);
 
-    self.locationLabel.frame = CGRectMake(109, 115, 206, 18);
+    self.locationText.frame = CGRectMake(104, 100, 206, 32);
+    self.locationText.contentInset = UIEdgeInsetsMake(-9, -3, 0, 0);
 
     CGFloat tableTop = picFrame.origin.y + picFrame.size.height + 8;
 
@@ -100,8 +102,8 @@
     self.bioTextView.text = @"No bio";
     self.bioTextView.textColor = [UIColor grayColor];
 
-    self.locationLabel.text = @"No location";
-    self.locationLabel.textColor = [UIColor grayColor];
+    self.locationText.text = @"No location";
+    self.locationText.textColor = [UIColor grayColor];
 
     self.tabBar.delegate = self;
     self.tabBar.selectedItem = self.sparksTab;
@@ -135,8 +137,8 @@
 
     NSString* location = user.location;
     if (location && ![location isEqualToString:@""]) {
-        self.locationLabel.text = location;
-        self.locationLabel.textColor = [UIColor blackColor];
+        self.locationText.text = location;
+        self.locationText.textColor = [UIColor blackColor];
     }
 }
 
@@ -155,14 +157,7 @@
         self.actionButton.alpha = 0.0;
         self.loggedInUserId = nil;
     } else {
-        
         self.loggedInUserId = user.userId;
-        if ([self.firefeed userIsLoggedInUser:self.userId]) {
-            
-            
-        } else {
-            
-        }
     }
     [self refreshActionButton];
 }

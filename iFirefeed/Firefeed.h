@@ -10,23 +10,9 @@
 #import <FirebaseAuthClient/FirebaseAuthClient.h>
 #import "FirefeedUser.h"
 #import "FirefeedSpark.h"
+#import "FirefeedSearch.h"
 
 @protocol FirefeedDelegate;
-
-//#define _FB_DEBUG
-
-#ifdef _FB_DEBUG
-// debug
-#define kFacebookAppId @"321090668014055"
-#define kFirebaseRoot @"http://firefeed.fblocal.com:9000"
-
-#else
-
-// Public
-#define kFacebookAppId @"104907529680402"
-#define kFirebaseRoot @"http://firefeed.firebaseio.com"
-
-#endif
 
 @interface Firefeed : NSObject
 
@@ -43,11 +29,13 @@
 - (void) observeUserInfo:(NSString *)userId;
 - (void) observeFollowersForUser:(NSString *)userId;
 - (void) observeFolloweesForUser:(NSString *)userId;
-- (BOOL) userIsLoggedInUser:(NSString *)userId;
+//- (BOOL) userIsLoggedInUser:(NSString *)userId;
 - (void) startFollowingUser:(NSString *)userId;
 - (void) stopFollowingUser:(NSString *)userId;
 - (void) saveUser:(FirefeedUser *)user;
 - (void) cleanup;
+
+- (FirefeedSearch *) searchAdapter;
 
 // Debugging
 - (void) logListens;

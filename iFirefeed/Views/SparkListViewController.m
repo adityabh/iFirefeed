@@ -10,6 +10,7 @@
 #import "ComposeViewController.h"
 #import "ProfileViewController.h"
 #import "SparkCell.h"
+#import "FirefeedAuth.h"
 
 @interface SparkListViewController () <ComposeViewControllerDelegate, FirefeedDelegate>
 
@@ -50,7 +51,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.tableView.autoresizingMask = UIViewAutoresizingNone;
     self.tableView.separatorColor = self.textColor;
     self.tableView.rowHeight = 72.0f;
 }
@@ -66,13 +66,16 @@
     [self.firefeed logout];
 }
 
+- (UIBarButtonItem *) leftBarButton {
+    return [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+}
 
 - (void) showLoggedInUI {
     UIBarButtonItem* newSparkButton = [[UIBarButtonItem alloc] initWithTitle:@"Spark" style:UIBarButtonItemStylePlain target:self action:@selector(startComposing)];
-    UIBarButtonItem* logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+
     [[self.tabBarController.tabBar.items objectAtIndex:1] setEnabled:NO];
     self.navigationItem.rightBarButtonItem = newSparkButton;
-    self.navigationItem.leftBarButtonItem = logoutButton;
+    self.navigationItem.leftBarButtonItem = [self leftBarButton];
     [[self.tabBarController.tabBar.items objectAtIndex:0] setEnabled:YES];
     [[self.tabBarController.tabBar.items objectAtIndex:1] setEnabled:YES];
     if (self.currentFeedId) {
@@ -95,7 +98,16 @@
 
 // Some tabbar animation stuff. Let's us have our own tab bar in navigator subviews
 - (void) viewWillAppear:(BOOL)animated {
+    CGRect viewFrame = self.view.frame;
+    CGRect tabBarFrame = self.tabBarController.tabBar.frame;
+    CGRect tableFrame = viewFrame;
+    if (tabBarFrame.origin.x < 0) {
+        // Tab bar is hidden, need to subtract off its height
+        tableFrame.size.height = viewFrame.size.height - tabBarFrame.size.height;
+    }
+    self.tableView.frame = tableFrame;
     [self showTabBar:self.tabBarController];
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -125,12 +137,27 @@
 }
 
 - (void)showTabBar:(UITabBarController *) tabbarcontroller {
+    NSMutableArray* otherViews = [[NSMutableArray alloc] init];
+    BOOL resizeOthers = NO;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.35];
     for(UIView *view in tabbarcontroller.view.subviews)
     {
         if ([view isKindOfClass:[UITabBar class]]) {
+            CGFloat tabX = view.frame.origin.x;
+            if (tabX != 0) {
+                resizeOthers = YES;
+            }
             [view setFrame:CGRectMake(0, view.frame.origin.y, view.frame.size.width, view.frame.size.height)];
+        } else {
+            [otherViews addObject:view];
+        }
+    }
+
+    if (resizeOthers) {
+        CGFloat tabHeight = self.tabBarController.tabBar.frame.size.height;
+        for (UIView* view in otherViews) {
+            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height - tabHeight)];
         }
     }
     
@@ -147,7 +174,7 @@
     if (text) {
         // Post the text
         [self.firefeed postSpark:text completionBlock:^(NSError *err) {
-            // TODO: a toast here?
+            // TODO: a toast here? Notification of some sort?
         }];
     } else {
         // user cancelled

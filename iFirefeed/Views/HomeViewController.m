@@ -11,6 +11,7 @@
 #import "ProfileViewController.h"
 #import "Firefeed.h"
 #import "SparkCell.h"
+#import "UserSearchViewController.h"
 
 
 @implementation HomeViewController
@@ -49,5 +50,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIBarButtonItem *) leftBarButton {
+    return [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(startSearch)];
+}
+
+- (void) startSearch {
+    UserSearchViewController* searchController = [[UserSearchViewController alloc] initWithNibName:nil bundle:nil];
+    searchController.firefeedSearch = [self.firefeed searchAdapter];
+    [self.navigationController pushViewController:searchController animated:YES];
+    [self hideTabBar:self.tabBarController];
+}
 
 @end
