@@ -83,7 +83,9 @@
 
 - (BOOL) searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
 
-    return [self.firefeedSearch searchTextDidUpdate:[searchString stringByReplacingOccurrencesOfString:@" " withString:@"_"]];
+    // TODO: start here. Don't do the string replace. Check for matches if we conditionally replace " " with "_" in FirefeedSearch
+    //return [self.firefeedSearch searchTextDidUpdate:[[searchString stringByReplacingOccurrencesOfString:@" " withString:@"_"] lowercaseString]];
+    return [self.firefeedSearch searchTextDidUpdate:searchString];
 }
 
 - (void) userIdWasSelected:(NSString *)userId {

@@ -64,7 +64,25 @@ typedef void (^ffbt_void_void)(void);
     [_authClient loginToFacebookAppWithId:appId permissions:nil audience:nil withCompletionBlock:^(NSError *error, FAUser *user) {
 
         [self onAuthStatusError:error user:user];
+        if (user) {
+            // TODO: is there a better place to put this?
+            // Populate the search indices
+            [self populateSearchIndicesForUser:user];
+        }
     }];
+}
+
+- (void) populateSearchIndicesForUser:(FAUser *)user {
+    Firebase* firstNameRef = [_ref.root childByAppendingPath:@"search/firstName"];
+    Firebase* lastNameRef = [_ref.root childByAppendingPath:@"search/lastName"];
+
+    NSString* firstName = [user.thirdPartyUserData objectForKey:@"first_name"];
+    NSString* lastName = [user.thirdPartyUserData objectForKey:@"last_name"];
+    NSString* firstNameKey = [[NSString stringWithFormat:@"%@_%@_%@", firstName, lastName, user.userId] lowercaseString];
+    NSString* lastNameKey = [[NSString stringWithFormat:@"%@_%@_%@", lastName, firstName, user.userId] lowercaseString];
+
+    [[firstNameRef childByAppendingPath:firstNameKey] setValue:user.userId];
+    [[lastNameRef childByAppendingPath:lastNameKey] setValue:user.userId];
 }
 
 - (void) logout {

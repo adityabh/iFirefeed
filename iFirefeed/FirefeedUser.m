@@ -38,7 +38,8 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
         self.loaded = NO;
         self.userId = ref.name;
         self.bio = [userData objectForKey:@"bio"];
-        self.name = [userData objectForKey:@"name"];
+        self.firstName = [userData objectForKey:@"firstName"];
+        self.lastName = [userData objectForKey:@"lastName"];
         self.fullName = [userData objectForKey:@"fullName"];
         self.location = [userData objectForKey:@"location"];
         self.ref = ref;
@@ -53,9 +54,13 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
                 if (prop) {
                     self.bio = prop;
                 }
-                prop = [val objectForKey:@"name"];
+                prop = [val objectForKey:@"firstName"];
                 if (prop) {
-                    self.name = prop;
+                    self.firstName = prop;
+                }
+                prop = [val objectForKey:@"lastName"];
+                if (prop) {
+                    self.lastName = prop;
                 }
                 prop = [val objectForKey:@"fullName"];
                 if (prop) {
@@ -87,8 +92,10 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
 
 
 - (void) updateFromRoot:(Firebase *)root {
+    // We force lowercase for firstName and lastName so that we can check search index keys in the security rules
+    // Those values aren't used for display anyways
     Firebase* peopleRef = [[root childByAppendingPath:@"people"] childByAppendingPath:_userId];
-    [peopleRef updateChildValues:@{@"bio": _bio, @"name": _name, @"fullName": _fullName, @"location": _location}];
+    [peopleRef updateChildValues:@{@"bio": _bio, @"firstName": [_firstName lowercaseString], @"lastName": [_lastName lowercaseString], @"fullName": _fullName, @"location": _location}];
 }
 
 - (void) setBio:(NSString *)bio {
@@ -99,11 +106,19 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
     }
 }
 
-- (void) setName:(NSString *)name {
+- (void) setFirstName:(NSString *)name {
     if (!name) {
-        _name = @"";
+        _firstName = @"";
     } else {
-        _name = name;
+        _firstName = name;
+    }
+}
+
+- (void) setLastName:(NSString *)lastName {
+    if (!lastName) {
+        _lastName = @"";
+    } else {
+        _lastName = lastName;
     }
 }
 

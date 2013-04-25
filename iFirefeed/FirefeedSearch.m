@@ -10,17 +10,55 @@
 #import "UIImageView+WebCache.h"
 
 #define CHAR_THRESHOLD 3
+#define IS_VALID_CHAR(c) (c != '.' && c != '#' && c != '$' && c != '/' && c != '[' && c != ']')
+
+@interface TupleRefHandle : NSObject
+
+@property (strong, nonatomic) FQuery* ref;
+@property (nonatomic) FirebaseHandle handle;
+
+@end
+
+@implementation TupleRefHandle
+
+@end
 
 @interface NSString (FirefeedSearch)
 
 - (BOOL) startsWithString:(NSString *)other;
+- (NSString *) nextLowerCaseKey;
+- (BOOL) isValidKey;
 
 @end
 
 @implementation NSString (FirefeedSearch)
 
 - (BOOL) startsWithString:(NSString *)other {
-    return [[self substringToIndex:other.length] isEqualToString:other];
+    return other.length <= self.length && [[self substringToIndex:other.length] isEqualToString:other];
+}
+
+- (NSString *) nextLowerCaseKey {
+    unichar c = [self characterAtIndex:self.length - 1];
+
+    if (c == USHRT_MAX) {
+        // Seems unlikely, but we should handle it
+        return nil;
+    } else {
+        do {
+            c++;
+        } while (!IS_VALID_CHAR(c));
+
+        return [NSString stringWithFormat:@"%@%c", [self substringToIndex:self.length - 1], c];
+    }
+}
+
+- (BOOL) isValidKey {
+    for (int i = 0; i < self.length; ++i) {
+        if (!IS_VALID_CHAR([self characterAtIndex:i])) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 @end
@@ -47,11 +85,13 @@
 @protocol NameSearchDelegate;
 
 @interface NameSearch : NSObject {
-    NSString* _stem;
+    //NSString* _stem;
     NSString* _term;
     Firebase* _root;
-    FirebaseHandle _firstNameHandle;
+    NSMutableArray* _handles;
     NSMutableArray* _firstNameResults;
+    NSMutableArray* _lastNameResults;
+    NSArray* _stems;
 }
 
 - (id) initWithRef:(Firebase *)ref andStem:(NSString *)stem;
@@ -74,25 +114,73 @@
 - (id) initWithRef:(Firebase *)ref andStem:(NSString *)stem {
     self = [super init];
     if (self) {
-        _stem = [stem substringToIndex:CHAR_THRESHOLD];
+        //_stem = [stem substringToIndex:CHAR_THRESHOLD];
         _term = stem;
         _root = ref;
         _firstNameResults = [[NSMutableArray alloc] init];
+        _lastNameResults = [[NSMutableArray alloc] init];
+        _handles = [[NSMutableArray alloc] init];
+        _stems = [self generateStems:stem];
         [self startSearch];
     }
     return self;
 }
 
+- (NSArray *) generateStems:(NSString *)stem {
+    stem = [[stem substringToIndex:CHAR_THRESHOLD] lowercaseString];
+    NSMutableArray* stems = [[NSMutableArray alloc] init];
+    [stems addObject:stem];
+    for (int i = 0; i < CHAR_THRESHOLD; ++i) {
+        unichar c = [stem characterAtIndex:i];
+        if (c == ' ') {
+            // Add a search for the pipe character
+            NSString* prefix = c > 0 ? [stem substringToIndex:i] : @"";
+            NSString* postfix = c < stem.length - 1 ? [stem substringFromIndex:i + 1] : @"";
+            NSString* pipeStem = [NSString stringWithFormat:@"%@%c%@", prefix, '|', postfix];
+            [stems addObject:pipeStem];
+        }
+    }
+    return stems;
+}
+
 - (void) dealloc {
-    [[_root childByAppendingPath:@"search/firstName"] removeObserverWithHandle:_firstNameHandle];
+    for (TupleRefHandle* tuple in _handles) {
+        [tuple.ref removeObserverWithHandle:tuple.handle];
+    }
+    NSLog(@"Dealloc'd");
+}
+
+- (void) startSearchForStem:(NSString *)stem {
+    __weak NameSearch* weakSelf = self;
+    NSString* endKey = [stem nextLowerCaseKey];
+    FQuery* firstNameQuery = [[_root childByAppendingPath:@"search/firstName"] queryStartingAtPriority:nil andChildName:stem];
+    FQuery* lastNameQuery = [[_root childByAppendingPath:@"search/lastName"] queryStartingAtPriority:nil andChildName:stem];
+    if (endKey) {
+        firstNameQuery = [firstNameQuery queryEndingAtPriority:nil andChildName:endKey];
+        lastNameQuery = [lastNameQuery queryEndingAtPriority:nil andChildName:endKey];
+    }
+    FirebaseHandle handle = [firstNameQuery observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        [weakSelf newFirstNameResult:snapshot];
+    }];
+    TupleRefHandle* tuple = [[TupleRefHandle alloc] init];
+    tuple.ref = firstNameQuery;
+    tuple.handle = handle;
+    [_handles addObject:tuple];
+
+    handle = [lastNameQuery observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        [weakSelf newLastNameResult:snapshot];
+    }];
+    tuple = [[TupleRefHandle alloc] init];
+    tuple.ref = lastNameQuery;
+    tuple.handle = handle;
+    [_handles addObject:tuple];
 }
 
 - (void) startSearch {
-    __weak NameSearch* weakSelf = self;
-    _firstNameHandle = [[[_root childByAppendingPath:@"search/firstName"] queryStartingAtPriority:nil andChildName:_stem] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-
-        [weakSelf newFirstNameResult:snapshot];
-    }];
+    for (NSString* stem in _stems) {
+        NSLog(@"search term: %@", stem);
+        [self startSearchForStem:stem];
+    }
 }
 
 - (void) newFirstNameResult:(FDataSnapshot *)snapshot {
@@ -106,6 +194,13 @@
     }
     //[self.delegate resultsDidChange:_firstNameResults];
 
+}
+
+- (void) newLastNameResult:(FDataSnapshot *)snapshot {
+    SearchResult* result = [[SearchResult alloc] init];
+    result.userId = snapshot.value;
+    // need to figure out how to handle this
+    //result.name =
 }
 
 - (void) raiseFilteredResults {
@@ -122,7 +217,12 @@
     if (term.length < CHAR_THRESHOLD) {
         return NO;
     } else {
-        return [term startsWithString:_stem];
+        for (NSString* stem in _stems) {
+            if ([term startsWithString:stem]) {
+                return YES;
+            }
+        }
+        return NO;
     }
 }
 
@@ -182,19 +282,23 @@
 }
 
 - (BOOL) searchTextDidUpdate:(NSString *)text {
-    if (self.currentSearch) {
+    NSString* term = [text lowercaseString];
+    if (![term isValidKey]) {
+        [self stopSearch];
+        return YES;
+    } else if (self.currentSearch) {
         // We have a term
-        if ([self.currentSearch containsTerm:text]) {
-            return [self.currentSearch updateTerm:text];
+        if ([self.currentSearch containsTerm:term]) {
+            return [self.currentSearch updateTerm:term];
         } else {
             [self stopSearch];
             return YES;
         }
     } else {
         // No current term. Save this one if it's longer than 3 chars
-        [self startSearch:text];
+        [self startSearch:term];
+        return NO;
     }
-    return NO;
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {

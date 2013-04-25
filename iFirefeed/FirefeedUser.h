@@ -20,7 +20,8 @@
 - (void) stopObserving;
 
 @property (strong, nonatomic) NSString* userId;
-@property (strong, nonatomic) NSString* name;
+@property (strong, nonatomic) NSString* firstName;
+@property (strong, nonatomic) NSString* lastName;
 @property (strong, nonatomic) NSString* fullName;
 @property (strong, nonatomic) NSString* location;
 @property (strong, nonatomic) NSString* bio;

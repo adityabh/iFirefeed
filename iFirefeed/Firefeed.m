@@ -165,11 +165,12 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     if (user) {
         // A user is logged in
         NSString* fullName = [user.thirdPartyUserData objectForKey:@"name"];
-        NSString* name = [user.thirdPartyUserData objectForKey:@"first_name"];
+        NSString* firstName = [user.thirdPartyUserData objectForKey:@"first_name"];
+        NSString* lastName = [user.thirdPartyUserData objectForKey:@"last_name"];
         self.userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:user.userId];
         // We shouldn't get this if we already have a user...
         assert(self.loggedInUser == nil);
-        self.loggedInUser = [FirefeedUser loadFromRoot:self.root withUserData:@{@"name": name, @"fullName": fullName, @"userId": user.userId} completionBlock:^(FirefeedUser *user) {
+        self.loggedInUser = [FirefeedUser loadFromRoot:self.root withUserData:@{@"firstName": firstName, @"lastName": lastName, @"fullName": fullName, @"userId": user.userId} completionBlock:^(FirefeedUser *user) {
             [user updateFromRoot:self.root];
             self.loggedInUser.delegate = self;
             [self.delegate loginStateDidChange:user];
