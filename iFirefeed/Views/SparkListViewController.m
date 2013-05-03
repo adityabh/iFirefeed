@@ -125,7 +125,7 @@
 }
 
 - (void) searchWasCancelled {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void) startComposing {
