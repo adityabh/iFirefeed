@@ -80,7 +80,6 @@
 @protocol NameSearchDelegate;
 
 @interface NameSearch : NSObject {
-    //NSString* _stem;
     NSString* _term;
     Firebase* _root;
     NSMutableArray* _handles;
@@ -109,7 +108,6 @@
 - (id) initWithRef:(Firebase *)ref andStem:(NSString *)stem {
     self = [super init];
     if (self) {
-        //_stem = [stem substringToIndex:CHAR_THRESHOLD];
         _term = stem;
         _root = ref;
         _firstNameResults = [[NSMutableArray alloc] init];
@@ -178,17 +176,13 @@
 
 - (void) newFirstNameResult:(FDataSnapshot *)snapshot {
     SearchResult* result = [[SearchResult alloc] init];
-    //result.name = snapshot.name;
     result.userId = snapshot.value;
     NSArray* segments = [[snapshot.name stringByReplacingOccurrencesOfString:@"," withString:@"."] componentsSeparatedByString:@"|"];
     result.name = [NSString stringWithFormat:@"%@ %@", [segments objectAtIndex:0], [segments objectAtIndex:1]];
-    //result.name = [snapshot.name substringToIndex:(snapshot.name.length - (result.userId.length + 1))];
     [_firstNameResults addObject:result];
     if ([result.name hasPrefix:_term]) {
         [self raiseFilteredResults];
     }
-    //[self.delegate resultsDidChange:_firstNameResults];
-
 }
 
 - (void) newLastNameResult:(FDataSnapshot *)snapshot {

@@ -14,6 +14,9 @@
     [self insertObject:newObject betweenLower:0 andUpper:self.count];
 }
 
+/**
+ * Performs a binary search for the correct insert location
+ */
 - (void) insertObject:(id)newObject betweenLower:(NSInteger)lower andUpper:(NSInteger)upper {
     if (lower == upper) {
         [self insertObject:newObject atIndex:lower];

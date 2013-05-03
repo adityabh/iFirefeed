@@ -207,11 +207,11 @@
 }
 
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee {
-    // No-op?
+    // No-op
 }
 
 - (void) follower:(FirefeedUser *)follower stoppedFollowing:(FirefeedUser *)followee {
-    // No-op?
+    // No-op
 }
 
 @end
