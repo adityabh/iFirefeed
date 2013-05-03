@@ -25,17 +25,12 @@
 
 @interface NSString (FirefeedSearch)
 
-- (BOOL) startsWithString:(NSString *)other;
 - (NSString *) nextLowerCaseKey;
 - (BOOL) isValidKey;
 
 @end
 
 @implementation NSString (FirefeedSearch)
-
-- (BOOL) startsWithString:(NSString *)other {
-    return other.length <= self.length && [[self substringToIndex:other.length] isEqualToString:other];
-}
 
 - (NSString *) nextLowerCaseKey {
     unichar c = [self characterAtIndex:self.length - 1];
@@ -147,7 +142,6 @@
     for (TupleRefHandle* tuple in _handles) {
         [tuple.ref removeObserverWithHandle:tuple.handle];
     }
-    NSLog(@"Dealloc'd");
 }
 
 - (void) startSearchForStem:(NSString *)stem {
@@ -178,7 +172,6 @@
 
 - (void) startSearch {
     for (NSString* stem in _stems) {
-        NSLog(@"search term: %@", stem);
         [self startSearchForStem:stem];
     }
 }
@@ -187,9 +180,11 @@
     SearchResult* result = [[SearchResult alloc] init];
     //result.name = snapshot.name;
     result.userId = snapshot.value;
-    result.name = [snapshot.name substringToIndex:(snapshot.name.length - (result.userId.length + 1))];
+    NSArray* segments = [[snapshot.name stringByReplacingOccurrencesOfString:@"," withString:@"."] componentsSeparatedByString:@"|"];
+    result.name = [NSString stringWithFormat:@"%@ %@", [segments objectAtIndex:0], [segments objectAtIndex:1]];
+    //result.name = [snapshot.name substringToIndex:(snapshot.name.length - (result.userId.length + 1))];
     [_firstNameResults addObject:result];
-    if ([result.name startsWithString:_term]) {
+    if ([result.name hasPrefix:_term]) {
         [self raiseFilteredResults];
     }
     //[self.delegate resultsDidChange:_firstNameResults];
@@ -200,13 +195,23 @@
     SearchResult* result = [[SearchResult alloc] init];
     result.userId = snapshot.value;
     // need to figure out how to handle this
-    //result.name =
+    NSArray* segments = [[snapshot.name stringByReplacingOccurrencesOfString:@"," withString:@"."] componentsSeparatedByString:@"|"];
+    result.name = [NSString stringWithFormat:@"%@, %@", [segments objectAtIndex:0], [segments objectAtIndex:1]];
+    [_lastNameResults addObject:result];
+    if ([result.name hasPrefix:_term]) {
+        [self raiseFilteredResults];
+    }
 }
 
 - (void) raiseFilteredResults {
     NSMutableArray* results = [[NSMutableArray alloc] init];
     for (SearchResult* result in _firstNameResults) {
-        if ([result.name startsWithString:_term]) {
+        if ([result.name hasPrefix:_term]) {
+            [results addObject:result];
+        }
+    }
+    for (SearchResult* result in _lastNameResults) {
+        if ([result.name hasPrefix:_term]) {
             [results addObject:result];
         }
     }
@@ -218,7 +223,7 @@
         return NO;
     } else {
         for (NSString* stem in _stems) {
-            if ([term startsWithString:stem]) {
+            if ([term hasPrefix:stem]) {
                 return YES;
             }
         }

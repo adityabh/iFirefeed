@@ -33,19 +33,24 @@ typedef void (^ffbt_void_ffspark)(FirefeedSpark* spark);
     if (self) {
         self.ref = ref;
         self.valueHandle = [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-            NSDictionary* val = snapshot.value;
-            self.authorId = [val objectForKey:@"author"];
-            self.authorName = [val objectForKey:@"by"];
-            self.content = [val objectForKey:@"content"];
-            self.timestamp = [(NSNumber *)[val objectForKey:@"timestamp"] doubleValue];
-            if (self.loaded) {
-                [self.delegate sparkDidUpdate:self];
+            id rawVal = snapshot.value;
+            if (rawVal == [NSNull null]) {
+                block(nil);
             } else {
+                NSDictionary* val = rawVal;
+                self.authorId = [val objectForKey:@"author"];
+                self.authorName = [val objectForKey:@"by"];
+                self.content = [val objectForKey:@"content"];
+                self.timestamp = [(NSNumber *)[val objectForKey:@"timestamp"] doubleValue];
                 block(self);
             }
         }];
     }
     return self;
+}
+
+- (NSComparisonResult) compare:(FirefeedSpark *)other {
+    return [self.ref.name compare:other.ref.name];
 }
 
 - (void) stopObserving {

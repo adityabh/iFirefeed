@@ -33,13 +33,6 @@
     return [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStylePlain target:self action:@selector(startSearch)];
 }
 
-- (void) startSearch {
-    UserSearchViewController* searchController = [[UserSearchViewController alloc] initWithNibName:nil bundle:nil];
-    searchController.firefeedSearch = [self.firefeed searchAdapter];
-    [self.navigationController pushViewController:searchController animated:YES];
-    [self hideTabBar:self.tabBarController];
-}
-
 - (void) showLoggedInUI {
     [super showLoggedInUI];
     self.currentFeedId = [self.firefeed observeLatestSparks];

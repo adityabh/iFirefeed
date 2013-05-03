@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3706264D171CBB030026AE27 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3706264C171CBB030026AE27 /* Firebase.framework */; };
+		3706C17417342F5300DA825A /* NSMutableArray+Sorted.m in Sources */ = {isa = PBXBuildFile; fileRef = 3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */; };
 		371D192D1726E557009D0D7D /* UserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192C1726E557009D0D7D /* UserSearchViewController.m */; };
 		371D193017271304009D0D7D /* FirefeedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192F17271304009D0D7D /* FirefeedSearch.m */; };
 		375C5E2C170B8F2400BB1CE9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2B170B8F2400BB1CE9 /* UIKit.framework */; };
@@ -74,6 +75,8 @@
 
 /* Begin PBXFileReference section */
 		3706264C171CBB030026AE27 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = "../../Library/Developer/Xcode/DerivedData/Firebase-atelujreoxbnbgguledubowgtaly/Build/Products/Debug-iphonesimulator/Firebase.framework"; sourceTree = "<group>"; };
+		3706C17217342F5200DA825A /* NSMutableArray+Sorted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Sorted.h"; sourceTree = "<group>"; };
+		3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Sorted.m"; sourceTree = "<group>"; };
 		371D192B1726E557009D0D7D /* UserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserSearchViewController.h; path = Views/UserSearchViewController.h; sourceTree = "<group>"; };
 		371D192C1726E557009D0D7D /* UserSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserSearchViewController.m; path = Views/UserSearchViewController.m; sourceTree = "<group>"; };
 		371D192E17271304009D0D7D /* FirefeedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirefeedSearch.h; sourceTree = "<group>"; };
@@ -253,6 +256,8 @@
 				379D079817161AC100FB2335 /* FirefeedSpark.m */,
 				371D192E17271304009D0D7D /* FirefeedSearch.h */,
 				371D192F17271304009D0D7D /* FirefeedSearch.m */,
+				3706C17217342F5200DA825A /* NSMutableArray+Sorted.h */,
+				3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */,
 			);
 			path = iFirefeed;
 			sourceTree = "<group>";
@@ -494,6 +499,7 @@
 				379D07B01717934F00FB2335 /* MOGlassButton.m in Sources */,
 				371D192D1726E557009D0D7D /* UserSearchViewController.m in Sources */,
 				371D193017271304009D0D7D /* FirefeedSearch.m in Sources */,
+				3706C17417342F5300DA825A /* NSMutableArray+Sorted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

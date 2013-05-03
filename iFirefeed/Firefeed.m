@@ -145,10 +145,6 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     NSLog(@"End outstanding observers");
 }
 
-/*- (BOOL) userIsLoggedInUser:(NSString *)userId {
-    return self.loggedInUser && [userId isEqualToString:self.loggedInUser.userId];
-}*/
-
 - (FirefeedSearch *) searchAdapter {
     return [[FirefeedSearch alloc] initWithRef:self.root];
 }
@@ -178,11 +174,6 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
     } else {
         if (self.loggedInUser) {
-            // TODO: handle this in the auth class
-            /*Firebase* peopleRef = [[self.root childByAppendingPath:@"people"] childByAppendingPath:self.loggedInUser.userId];
-            Firebase* presenceRef = [peopleRef childByAppendingPath:@"presence"];
-            [presenceRef removeValue];
-            [presenceRef cancelDisconnectOperations];*/
             [self.loggedInUser stopObserving];
         }
         self.loggedInUser = nil;
@@ -269,22 +260,23 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     FirebaseHandle childAddedHandle = [query observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         if (weakSelf) {
             NSString* sparkId = snapshot.name;
+            __block BOOL loaded = NO;
+            __block FirefeedSpark* outerSpark = [FirefeedSpark loadFromRoot:self.root withSparkId:sparkId block:^(FirefeedSpark* spark) {
+                if (loaded && spark) {
+                    [weakSelf.delegate spark:spark wasUpdatedInTimeline:feedId];
+                } else if (!loaded && spark) {
+                    loaded = YES;
+                    [weakSelf.delegate spark:spark wasAddedToTimeline:feedId];
+                } else if (loaded) {
+                    // The spark in question was deleted.
+                    [weakSelf.delegate spark:outerSpark wasRemovedFromTimeline:feedId];
+                } else {
+                    // The spark in question doesn't exist
+                    // We can leave it alone, and leave loaded == NO, if it ever starts existing, we'll handle it
+                }
 
-            FirefeedSpark* spark = [FirefeedSpark loadFromRoot:self.root withSparkId:sparkId block:^(FirefeedSpark* spark) {
-                
-                [weakSelf.delegate spark:spark wasAddedToTimeline:feedId];
             }];
-            [weakSelf.sparks addObject:spark];
-            /*Firebase* sparkRef = [[self.root childByAppendingPath:@"sparks"] childByAppendingPath:sparkId];
-
-            FeedHandlers* handle = [weakSelf.feeds objectForKey:feedId];
-            FirebaseHandle valueHandle = [sparkRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-                NSMutableDictionary* spark = [(NSDictionary *)snapshot.value mutableCopy];
-                NSString* author = [spark objectForKey:@"author"];
-                [spark setObject:[weakSelf picUrlForAuthor:author] forKey:@"pic"];
-                [weakSelf.delegate spark:spark wasAddedToTimeline:feedId];
-            }];
-            [handle.valueHandles setObject:[NSNumber numberWithInt:valueHandle] forKey:sparkRef.description];*/
+            [weakSelf.sparks addObject:outerSpark];
         }
     }];
 

@@ -11,9 +11,8 @@
 
 @interface SparkListViewController : UIViewController
 
-- (void) hideTabBar:(UITabBarController *)tabbarcontroller;
-- (void) showTabBar:(UITabBarController *)tabbarcontroller;
 - (void) startComposing;
+- (void) startSearch;
 - (void) logout;
 // Override this
 - (NSString *) title;

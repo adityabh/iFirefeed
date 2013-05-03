@@ -176,6 +176,14 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
 
 }
 
+- (void) spark:(FirefeedSpark *)spark wasRemovedFromTimeline:(NSString *)timeline {
+
+}
+
+- (void) spark:(FirefeedSpark *)spark wasUpdatedInTimeline:(NSString *)timeline {
+    
+}
+
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee {
 
 }

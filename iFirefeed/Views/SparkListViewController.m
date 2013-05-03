@@ -9,10 +9,12 @@
 #import "SparkListViewController.h"
 #import "ComposeViewController.h"
 #import "ProfileViewController.h"
+#import "UserSearchViewController.h"
 #import "SparkCell.h"
 #import "FirefeedAuth.h"
+#import "NSMutableArray+Sorted.h"
 
-@interface SparkListViewController () <ComposeViewControllerDelegate, FirefeedDelegate>
+@interface SparkListViewController () <ComposeViewControllerDelegate, FirefeedDelegate, UserSearchDelegate>
 
 @property (strong, nonatomic) NSMutableArray* sparks;
 @property (strong, nonatomic) UIColor* textColor;
@@ -96,72 +98,34 @@
     }
 }
 
-// Some tabbar animation stuff. Let's us have our own tab bar in navigator subviews
 - (void) viewWillAppear:(BOOL)animated {
-    CGRect viewFrame = self.view.frame;
-    CGRect tabBarFrame = self.tabBarController.tabBar.frame;
-    CGRect tableFrame = viewFrame;
-    if (tabBarFrame.origin.x < 0) {
-        // Tab bar is hidden, need to subtract off its height
-        tableFrame.size.height = viewFrame.size.height - tabBarFrame.size.height;
-    }
+    CGFloat height = self.view.frame.size.height;
+    CGRect tableFrame = self.tableView.frame;
+    tableFrame.size.height = height;
+    tableFrame.size.width = self.view.frame.size.width;
     self.tableView.frame = tableFrame;
-    [self showTabBar:self.tabBarController];
-
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [self.tableView reloadData];
 }
 
-- (void) hideTabBar:(UITabBarController *)tabbarcontroller {
-    NSMutableArray* otherViews = [[NSMutableArray alloc] init];
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.35];
-    CGFloat hiddenX = -self.view.frame.size.width;
-
-    for(UIView *view in tabbarcontroller.view.subviews)
-    {
-        if ([view isKindOfClass:[UITabBar class]]) {
-            [view setFrame:CGRectMake(hiddenX, view.frame.origin.y, view.frame.size.width, view.frame.size.height)];
-        } else {
-            [otherViews addObject:view];
-        }
-    }
-
-    [UIView commitAnimations];
-    CGFloat height = self.tabBarController.view.frame.size.height;
-    for (UIView* view in otherViews) {
-        [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, height)];
-    }
+- (void) startSearch {
+    UserSearchViewController* searchController = [[UserSearchViewController alloc] initWithNibName:nil bundle:nil];
+    searchController.firefeedSearch = [self.firefeed searchAdapter];
+    searchController.delegate = self;
+    [self.navigationController pushViewController:searchController animated:YES];
 }
 
-- (void)showTabBar:(UITabBarController *) tabbarcontroller {
-    NSMutableArray* otherViews = [[NSMutableArray alloc] init];
-    BOOL resizeOthers = NO;
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.35];
-    for(UIView *view in tabbarcontroller.view.subviews)
-    {
-        if ([view isKindOfClass:[UITabBar class]]) {
-            CGFloat tabX = view.frame.origin.x;
-            if (tabX != 0) {
-                resizeOthers = YES;
-            }
-            [view setFrame:CGRectMake(0, view.frame.origin.y, view.frame.size.width, view.frame.size.height)];
-        } else {
-            [otherViews addObject:view];
-        }
-    }
+- (void) userWasSelected:(NSString *)userId {
+    [self.navigationController popViewControllerAnimated:NO];
+    ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
+    profileViewController.userId = userId;
+    [self.navigationController pushViewController:profileViewController animated:YES];
+}
 
-    if (resizeOthers) {
-        CGFloat tabHeight = self.tabBarController.tabBar.frame.size.height;
-        for (UIView* view in otherViews) {
-            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height - tabHeight)];
-        }
-    }
-    
-    [UIView commitAnimations];
+- (void) searchWasCancelled {
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void) startComposing {
@@ -200,13 +164,12 @@
     FirefeedSpark* spark = [self.sparks objectAtIndex:(self.sparks.count - index - 1)];
     ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
     profileViewController.userId = spark.authorId;
-    [self hideTabBar:self.tabBarController];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"SparkListCell";
     SparkCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     if (cell == nil) {
@@ -226,12 +189,21 @@
 }
 
 - (void) spark:(NSDictionary *)spark wasAddedToTimeline:(NSString *)timeline {
-    [self.sparks addObject:spark];
+    [self.sparks insertSorted:spark];
+    [self.tableView reloadData];
+}
+
+- (void) spark:(FirefeedSpark *)spark wasUpdatedInTimeline:(NSString *)timeline {
     [self.tableView reloadData];
 }
 
 - (void) spark:(NSDictionary *)spark wasOverflowedFromTimeline:(NSString *)timeline {
 
+}
+
+- (void) spark:(FirefeedSpark *)spark wasRemovedFromTimeline:(NSString *)timeline {
+    [self.sparks removeObject:spark];
+    [self.tableView reloadData];
 }
 
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee {

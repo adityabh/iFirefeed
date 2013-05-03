@@ -77,23 +77,23 @@
 
 
 - (void) searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self.delegate searchWasCancelled];
 }
 
 
 - (BOOL) searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
 
-    // TODO: start here. Don't do the string replace. Check for matches if we conditionally replace " " with "_" in FirefeedSearch
-    //return [self.firefeedSearch searchTextDidUpdate:[[searchString stringByReplacingOccurrencesOfString:@" " withString:@"_"] lowercaseString]];
     return [self.firefeedSearch searchTextDidUpdate:searchString];
 }
 
 - (void) userIdWasSelected:(NSString *)userId {
-    NSMutableArray* controllers = [self.navigationController.viewControllers mutableCopy];
+    /*NSMutableArray* controllers = [self.navigationController.viewControllers mutableCopy];
     ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
     profileViewController.userId = userId;
     [controllers setObject:profileViewController atIndexedSubscript:controllers.count - 1];
-    [self.navigationController setViewControllers:controllers animated:YES];
+    [self.navigationController setViewControllers:controllers animated:YES];*/
+    [self.delegate userWasSelected:userId];
 }
 
 @end

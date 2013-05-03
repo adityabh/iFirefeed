@@ -29,7 +29,6 @@
 - (void) observeUserInfo:(NSString *)userId;
 - (void) observeFollowersForUser:(NSString *)userId;
 - (void) observeFolloweesForUser:(NSString *)userId;
-//- (BOOL) userIsLoggedInUser:(NSString *)userId;
 - (void) startFollowingUser:(NSString *)userId;
 - (void) stopFollowingUser:(NSString *)userId;
 - (void) saveUser:(FirefeedUser *)user;
@@ -50,6 +49,8 @@
 - (void) loginStateDidChange:(FirefeedUser *)user;
 - (void) spark:(FirefeedSpark *)spark wasAddedToTimeline:(NSString *)timeline;
 - (void) spark:(FirefeedSpark *)spark wasOverflowedFromTimeline:(NSString *)timeline;
+- (void) spark:(FirefeedSpark *)spark wasUpdatedInTimeline:(NSString *)timeline;
+- (void) spark:(FirefeedSpark *)spark wasRemovedFromTimeline:(NSString *)timeline;
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee;
 - (void) follower:(FirefeedUser *)follower stoppedFollowing:(FirefeedUser *)followee;
 - (void) userDidUpdate:(FirefeedUser *)user;

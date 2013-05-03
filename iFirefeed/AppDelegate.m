@@ -21,11 +21,16 @@
 
     [Firefeed logDiagnostics];
 
+    // Set up some appearances
     UIColor* textColor = [UIColor colorWithRed:0x7b / 255.0f green:0x5f / 255.0f blue:0x11 / 255.0f alpha:1.0f];
     UIColor* mediumYellow = [UIColor colorWithRed:0xff / 255.0f green:0xea / 255.0f blue:0xb3 / 255.0f alpha:1.0];
+    UIColor* brownColor = [UIColor colorWithRed:0x7b / 255.0f green:0x5f / 255.0f blue:0x11 / 255.0f alpha:1.0f];
     [[UINavigationBar appearance] setTintColor:mediumYellow];
-    //[[UILabel appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowColor: [UIColor clearColor]} forState:UIControlStateNormal];
+    [[UITabBar appearance] setSelectedImageTintColor:mediumYellow];
+    [[UITabBar appearance] setTintColor:brownColor];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowColor: [UIColor clearColor]} forState:UIControlStateNormal];
+
+
     UITabBarController* tabBarController = [[UITabBarController alloc] init];
 
     HomeViewController* homeViewController = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
@@ -38,11 +43,6 @@
     UINavigationController* recentNavController = [[UINavigationController alloc] initWithRootViewController:recentSparksController];
 
     tabBarController.viewControllers = @[navController, profileNavController, recentNavController];
-    tabBarController.tabBar.tintColor = textColor;
-    //tabBarController.tabBar.
-    [[UITabBar appearance] setSelectedImageTintColor:mediumYellow];
-
-
     self.window.rootViewController = tabBarController;
 
     [self.window makeKeyAndVisible];

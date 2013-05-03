@@ -17,12 +17,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UITabBar *tabBar;
 @property (weak, nonatomic) IBOutlet UITextView *bioTextView;
 @property (weak, nonatomic) IBOutlet UITextView *locationText;
 @property (weak, nonatomic) IBOutlet MOGlassButton *actionButton;
-@property (weak, nonatomic) IBOutlet UITabBarItem *sparksTab;
-@property (weak, nonatomic) IBOutlet UITabBarItem *followingTab;
-@property (weak, nonatomic) IBOutlet UITabBarItem *followersTab;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 
 @end
