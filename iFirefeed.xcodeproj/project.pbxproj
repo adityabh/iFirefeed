@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3706264D171CBB030026AE27 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3706264C171CBB030026AE27 /* Firebase.framework */; };
 		3706C17417342F5300DA825A /* NSMutableArray+Sorted.m in Sources */ = {isa = PBXBuildFile; fileRef = 3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */; };
 		371D192D1726E557009D0D7D /* UserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192C1726E557009D0D7D /* UserSearchViewController.m */; };
 		371D193017271304009D0D7D /* FirefeedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192F17271304009D0D7D /* FirefeedSearch.m */; };
 		37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37550CC817380C1A008E2928 /* Crashlytics.framework */; };
+		37550CCB17381927008E2928 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37550CCA17381927008E2928 /* Firebase.framework */; };
 		375C5E2C170B8F2400BB1CE9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2B170B8F2400BB1CE9 /* UIKit.framework */; };
 		375C5E2E170B8F2400BB1CE9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2D170B8F2400BB1CE9 /* Foundation.framework */; };
 		375C5E30170B8F2400BB1CE9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2F170B8F2400BB1CE9 /* CoreGraphics.framework */; };
@@ -75,7 +75,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3706264C171CBB030026AE27 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = "../../Library/Developer/Xcode/DerivedData/Firebase-atelujreoxbnbgguledubowgtaly/Build/Products/Debug-iphonesimulator/Firebase.framework"; sourceTree = "<group>"; };
 		3706C17217342F5200DA825A /* NSMutableArray+Sorted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Sorted.h"; sourceTree = "<group>"; };
 		3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Sorted.m"; sourceTree = "<group>"; };
 		371D192B1726E557009D0D7D /* UserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserSearchViewController.h; path = Views/UserSearchViewController.h; sourceTree = "<group>"; };
@@ -83,6 +82,7 @@
 		371D192E17271304009D0D7D /* FirefeedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirefeedSearch.h; sourceTree = "<group>"; };
 		371D192F17271304009D0D7D /* FirefeedSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirefeedSearch.m; sourceTree = "<group>"; };
 		37550CC817380C1A008E2928 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		37550CCA17381927008E2928 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		375C5E28170B8F2400BB1CE9 /* iFirefeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFirefeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		375C5E2B170B8F2400BB1CE9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		375C5E2D170B8F2400BB1CE9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -195,8 +195,8 @@
 				375C5E2E170B8F2400BB1CE9 /* Foundation.framework in Frameworks */,
 				375C5E30170B8F2400BB1CE9 /* CoreGraphics.framework in Frameworks */,
 				379D076B171383CC00FB2335 /* FirebaseAuthClient.framework in Frameworks */,
-				3706264D171CBB030026AE27 /* Firebase.framework in Frameworks */,
 				37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */,
+				37550CCB17381927008E2928 /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,8 +223,8 @@
 		375C5E2A170B8F2400BB1CE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37550CCA17381927008E2928 /* Firebase.framework */,
 				37550CC817380C1A008E2928 /* Crashlytics.framework */,
-				3706264C171CBB030026AE27 /* Firebase.framework */,
 				379D07951716148000FB2335 /* MapKit.framework */,
 				379D07931716141A00FB2335 /* ImageIO.framework */,
 				379D076A171383CC00FB2335 /* FirebaseAuthClient.framework */,
@@ -604,9 +604,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/Firebase-atelujreoxbnbgguledubowgtaly/Build/Products/Debug-iphoneos\"",
 					"\"$(SRCROOT)/../../deploy\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/Firebase-atelujreoxbnbgguledubowgtaly/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -622,10 +620,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/Firebase-atelujreoxbnbgguledubowgtaly/Build/Products/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Release-iphonesimulator\"",
 					"\"$(SRCROOT)/../../deploy\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/Firebase-atelujreoxbnbgguledubowgtaly/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
