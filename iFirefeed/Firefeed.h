@@ -54,5 +54,8 @@
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee;
 - (void) follower:(FirefeedUser *)follower stoppedFollowing:(FirefeedUser *)followee;
 - (void) userDidUpdate:(FirefeedUser *)user;
+- (void) timelineDidLoad:(NSString *)feedId;
+- (void) followersDidLoad:(NSString *)userId;
+- (void) followeesDidLoad:(NSString *)userId;
 
 @end

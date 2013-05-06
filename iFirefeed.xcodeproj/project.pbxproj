@@ -12,6 +12,7 @@
 		371D193017271304009D0D7D /* FirefeedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192F17271304009D0D7D /* FirefeedSearch.m */; };
 		37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37550CC817380C1A008E2928 /* Crashlytics.framework */; };
 		37550CCB17381927008E2928 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37550CCA17381927008E2928 /* Firebase.framework */; };
+		37550CCD17383A73008E2928 /* logo-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 37550CCC17383A73008E2928 /* logo-114.png */; };
 		375C5E2C170B8F2400BB1CE9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2B170B8F2400BB1CE9 /* UIKit.framework */; };
 		375C5E2E170B8F2400BB1CE9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2D170B8F2400BB1CE9 /* Foundation.framework */; };
 		375C5E30170B8F2400BB1CE9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2F170B8F2400BB1CE9 /* CoreGraphics.framework */; };
@@ -83,6 +84,7 @@
 		371D192F17271304009D0D7D /* FirefeedSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirefeedSearch.m; sourceTree = "<group>"; };
 		37550CC817380C1A008E2928 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		37550CCA17381927008E2928 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		37550CCC17383A73008E2928 /* logo-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-114.png"; sourceTree = "<group>"; };
 		375C5E28170B8F2400BB1CE9 /* iFirefeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFirefeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		375C5E2B170B8F2400BB1CE9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		375C5E2D170B8F2400BB1CE9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -206,6 +208,7 @@
 		375C5E1F170B8F2400BB1CE9 = {
 			isa = PBXGroup;
 			children = (
+				37550CCC17383A73008E2928 /* logo-114.png */,
 				375C5E31170B8F2400BB1CE9 /* iFirefeed */,
 				375C5E2A170B8F2400BB1CE9 /* Frameworks */,
 				375C5E29170B8F2400BB1CE9 /* Products */,
@@ -462,6 +465,7 @@
 				379D07A117175F9100FB2335 /* recent.png in Resources */,
 				379D07A31717609800FB2335 /* edit.png in Resources */,
 				379D07A71717687100FB2335 /* logo-57.png in Resources */,
+				37550CCD17383A73008E2928 /* logo-114.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,6 +621,8 @@
 		375C5E47170B8F2400BB1CE9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Envolve, Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Envolve, Inc.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../deploy\"",
@@ -626,6 +632,8 @@
 				GCC_PREFIX_HEADER = "iFirefeed/iFirefeed-Prefix.pch";
 				INFOPLIST_FILE = "iFirefeed/iFirefeed-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "BCA010F3-19BE-47A4-87A8-404185801D3E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA010F3-19BE-47A4-87A8-404185801D3E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

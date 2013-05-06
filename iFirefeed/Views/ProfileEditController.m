@@ -192,4 +192,16 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
     
 }
 
+- (void) timelineDidLoad:(NSString *)feedId {
+    
+}
+
+- (void) followersDidLoad:(NSString *)userId {
+
+}
+
+- (void) followeesDidLoad:(NSString *)userId {
+    
+}
+
 @end

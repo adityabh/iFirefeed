@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) NSMutableArray* sparks;
 @property (strong, nonatomic) UIColor* textColor;
+@property (nonatomic) BOOL loaded;
+@property (strong, nonatomic) UIActivityIndicatorView* spinner;
 
 @end
 
@@ -27,6 +29,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.loaded = NO;
         self.firefeed = [[Firefeed alloc] initWithUrl:kFirebaseRoot];
         self.firefeed.delegate = self;
         self.sparks = [[NSMutableArray alloc] init];
@@ -104,6 +107,15 @@
     tableFrame.size.height = height;
     tableFrame.size.width = self.view.frame.size.width;
     self.tableView.frame = tableFrame;
+    if (!self.loaded) {
+        CGRect frame = self.view.frame;
+        CGRect spinnerFrame = CGRectMake(frame.size.width / 2 - 100, frame.size.height / 2 - 100, 200, 200);
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        self.spinner.color = self.textColor;
+        self.spinner.frame = spinnerFrame;
+        [self.view addSubview:self.spinner];
+        [self.spinner startAnimating];
+    }
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -206,12 +218,29 @@
     [self.tableView reloadData];
 }
 
+- (void) timelineDidLoad:(NSString *)feedId {
+    if (self.spinner) {
+        [self.spinner stopAnimating];
+        [self.spinner removeFromSuperview];
+        self.spinner = nil;
+    }
+    self.loaded = YES;
+}
+
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee {
     // No-op
 }
 
 - (void) follower:(FirefeedUser *)follower stoppedFollowing:(FirefeedUser *)followee {
     // No-op
+}
+
+- (void)followersDidLoad:(NSString *)userId {
+
+}
+
+- (void) followeesDidLoad:(NSString *)userId {
+    
 }
 
 @end

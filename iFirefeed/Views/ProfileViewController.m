@@ -23,6 +23,10 @@
 @property (strong, nonatomic) NSString* loggedInUserId;
 @property (strong, nonatomic) UIColor* brown;
 @property (strong, nonatomic) UIColor* yellow;
+@property (strong, nonatomic) UIActivityIndicatorView* spinner;
+@property (nonatomic) BOOL sparksLoaded;
+@property (nonatomic) BOOL followersLoaded;
+@property (nonatomic) BOOL followeesLoaded;
 
 @end
 
@@ -37,6 +41,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // TODO: find a better way to set this once. Constant somewhere?
+        self.sparksLoaded = NO;
+        self.followeesLoaded = NO;
+        self.followersLoaded = NO;
         self.firefeed = [[Firefeed alloc] initWithUrl:kFirebaseRoot];
         self.sparks = [[NSMutableArray alloc] init];
         self.followers = [[NSMutableArray alloc] init];
@@ -71,6 +78,14 @@
     CGRect btnFrame = self.actionButton.frame;
     btnFrame.origin.x = self.view.frame.size.width - btnFrame.size.width - 6;
     self.actionButton.frame = btnFrame;
+    
+
+    CGRect frame = self.view.frame;
+    CGRect spinnerFrame = CGRectMake(frame.size.width / 2 - 100, frame.size.height / 2 - 100, 200, 200);
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.spinner.color = self.brown;
+    self.spinner.frame = spinnerFrame;
+
     [self highlightSelectedSegment];
 }
 
@@ -100,6 +115,34 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     item.titleView = titleLabel;
     return item;
+}
+
+- (void) refreshSpinner {
+    if (self.segmentedControl.selectedSegmentIndex == SPARKS_TAB) {
+        if (self.sparksLoaded && self.spinner.superview) {
+            [self.spinner stopAnimating];
+            [self.spinner removeFromSuperview];
+        } else if (!self.sparksLoaded && !self.spinner.superview) {
+            [self.view addSubview:self.spinner];
+            [self.spinner startAnimating];
+        }
+    } else if (self.segmentedControl.selectedSegmentIndex == FOLLOWERS_TAB) {
+        if (self.followersLoaded && self.spinner.superview) {
+            [self.spinner stopAnimating];
+            [self.spinner removeFromSuperview];
+        } else if (!self.followersLoaded && !self.spinner.superview) {
+            [self.view addSubview:self.spinner];
+            [self.spinner startAnimating];
+        }
+    } else {
+        if (self.followeesLoaded && self.spinner.superview) {
+            [self.spinner stopAnimating];
+            [self.spinner removeFromSuperview];
+        } else if (!self.followeesLoaded && !self.spinner.superview) {
+            [self.view addSubview:self.spinner];
+            [self.spinner startAnimating];
+        }
+    }
 }
 
 - (void)viewDidLoad
@@ -172,12 +215,14 @@
             }
         }
     }
+    [self refreshSpinner];
 }
 
 - (void) segmentSelected:(id)sender {
     [self highlightSelectedSegment];
     [self.tableView reloadData];
     [self.tableView setContentOffset:CGPointZero animated:NO];
+    NSLog(@"Segment selected");
 }
 
 - (void)didReceiveMemoryWarning
@@ -197,7 +242,7 @@
 }
 
 - (void) refreshActionButton {
-    if (self.loggedInUserId && ![self.loggedInUserId isEqualToString:self.userId]) {
+    if (self.followersLoaded && self.loggedInUserId && ![self.loggedInUserId isEqualToString:self.userId]) {
         if ([self loggedInUserIsFollowingUser]) {
             [self.actionButton setTitle:@"Unfollow" forState:UIControlStateNormal];
         } else {
@@ -375,6 +420,19 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 72.0f;
+}
+
+- (void) timelineDidLoad:(NSString *)feedId {
+    self.sparksLoaded = YES;
+}
+
+- (void) followeesDidLoad:(NSString *)userId {
+    self.followeesLoaded = YES;
+}
+
+- (void) followersDidLoad:(NSString *)userId {
+    self.followersLoaded = YES;
+    [self refreshActionButton];
 }
 
 @end

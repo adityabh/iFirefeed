@@ -212,6 +212,11 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
                 [weakSelf.users addObject:user];
             }
         }];
+
+        [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+            [weakSelf.delegate followeesDidLoad:userId];
+        }];
+
         [self.feeds setObject:handles forKey:feedId];
 
     }];
@@ -247,6 +252,11 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
                 [weakSelf.users addObject:user];
             }
         }];
+
+        [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+            [weakSelf.delegate followersDidLoad:userId];
+        }];
+
         [self.feeds setObject:handles forKey:feedId];
         
     }];
@@ -281,7 +291,12 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     }];
 
     FirebaseHandle childRemovedHandle = [query observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
+        // TODO: overflow the spark from the timeline
+    }];
 
+    [query observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Finished loading %@", feedId);
+        [weakSelf.delegate timelineDidLoad:feedId];
     }];
 
     FeedHandlers* handlers = [[FeedHandlers alloc] init];
