@@ -603,7 +603,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Debug-iphonesimulator\"",
 					"\"$(SRCROOT)/../../deploy\"",
 					"\"$(SRCROOT)\"",
 				);
@@ -620,7 +619,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Release-iphonesimulator\"",
 					"\"$(SRCROOT)/../../deploy\"",
 					"\"$(SRCROOT)\"",
 				);
