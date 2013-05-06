@@ -8,6 +8,7 @@
 
 #import "UserSearchViewController.h"
 #import "ProfileViewController.h"
+#import <Crashlytics/Crashlytics.h>
 
 @interface UserSearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, FirefeedSearchDelegate>
 

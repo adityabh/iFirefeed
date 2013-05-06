@@ -11,11 +11,13 @@
 #import "ProfileEditController.h"
 #import "RecentSparksViewController.h"
 #import "Firefeed.h"
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Crashlytics startWithAPIKey:@"19a9a2eacc330393b337b28ae42dcc90041d6156"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
 
