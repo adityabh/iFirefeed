@@ -204,4 +204,8 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
     
 }
 
+- (void) loginAttemptDidFail {
+    
+}
+
 @end

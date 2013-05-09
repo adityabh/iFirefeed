@@ -122,7 +122,7 @@ typedef void (^ffbt_void_void)(void);
     } else {
         _user = nil;
     }
-
+    
     for (NSNumber* handle in _blocks) {
         ffbt_void_nserror_user block = [_blocks objectForKey:handle];
         block(error, user);

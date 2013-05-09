@@ -131,13 +131,17 @@
 
 - (void) userWasSelected:(NSString *)userId {
     [self.navigationController popViewControllerAnimated:NO];
-    ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
-    profileViewController.userId = userId;
-    [self.navigationController pushViewController:profileViewController animated:YES];
+    [self showProfileForUser:userId];
 }
 
 - (void) searchWasCancelled {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void) showProfileForUser:(NSString *)userId {
+    ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
+    profileViewController.userId = userId;
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void) startComposing {
@@ -171,13 +175,6 @@
     return self.sparks.count;
 }
 
-- (void) showProfileForButton:(UIButton *)button {
-    NSInteger index = button.tag;
-    FirefeedSpark* spark = [self.sparks objectAtIndex:(self.sparks.count - index - 1)];
-    ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
-    profileViewController.userId = spark.authorId;
-    [self.navigationController pushViewController:profileViewController animated:YES];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -191,9 +188,14 @@
 
     // Put in reverse order
     FirefeedSpark* spark = [self.sparks objectAtIndex:(self.sparks.count - indexPath.row - 1)];
-    [cell configureForSpark:spark atRow:indexPath.row target:self selector:@selector(showProfileForButton:)];
+    [cell configureForSpark:spark];
 
     return cell;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    FirefeedSpark* spark = [self.sparks objectAtIndex:(self.sparks.count - indexPath.row - 1)];
+    [self showProfileForUser:spark.authorId];
 }
 
 - (void) userDidUpdate:(FirefeedUser *)user {
@@ -240,6 +242,10 @@
 }
 
 - (void) followeesDidLoad:(NSString *)userId {
+    
+}
+
+- (void) loginAttemptDidFail {
     
 }
 

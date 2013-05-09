@@ -338,9 +338,8 @@
     }
 }
 
-- (void) showProfileForButton:(UIButton *)button {
+- (void) showProfileForRow:(NSInteger)index {
     NSInteger selected = self.segmentedControl.selectedSegmentIndex;
-    NSInteger index = button.tag;
     if (selected == FOLLOWERS_TAB) {
         FirefeedUser* user = [self.followers objectAtIndex:(self.followers.count - index - 1)];
         ProfileViewController* profileViewController = [[ProfileViewController alloc] initWithNibName:@"ProfileViewController" bundle:nil];
@@ -369,7 +368,7 @@
     }
 
     FirefeedUser* follower = [self.followers objectAtIndex:(self.followers.count - row - 1)];
-    [cell configureForUser:follower atRow:row target:self selector:@selector(showProfileForButton:)];
+    [cell configureForUser:follower];
 
     return cell;
 }
@@ -385,7 +384,7 @@
     }
 
     FirefeedUser* followee = [self.following objectAtIndex:(self.following.count - row - 1)];
-    [cell configureForUser:followee atRow:row target:self selector:@selector(showProfileForButton:)];
+    [cell configureForUser:followee];
     return cell;
 }
 
@@ -401,9 +400,18 @@
 
     // Put in reverse order
     FirefeedSpark* spark = [self.sparks objectAtIndex:(self.sparks.count - row - 1)];
-    [cell configureForSpark:spark atRow:row target:nil selector:nil];
+    [cell configureForSpark:spark];
 
     return cell;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger selected = self.segmentedControl.selectedSegmentIndex;
+    if (selected == SPARKS_TAB) {
+        // No-op, we're already on the profile page
+    } else {
+        [self showProfileForRow:indexPath.row];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -433,6 +441,10 @@
 - (void) followersDidLoad:(NSString *)userId {
     self.followersLoaded = YES;
     [self refreshActionButton];
+}
+
+- (void) loginAttemptDidFail {
+    // No-op
 }
 
 @end

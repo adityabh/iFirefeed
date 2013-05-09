@@ -73,6 +73,9 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
         [FirefeedAuth watchAuthForRef:self.root withBlock:^(NSError *error, FAUser *user) {
             if (error) {
                 NSLog(@"ERROR: %@", error);
+                if (error.code == FAErrorAccountNotFound) {
+                    [weakSelf.delegate loginAttemptDidFail];
+                }
             } else {
                 [weakSelf onAuthStatus:user];
             }
@@ -295,7 +298,6 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     }];
 
     [query observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Finished loading %@", feedId);
         [weakSelf.delegate timelineDidLoad:feedId];
     }];
 

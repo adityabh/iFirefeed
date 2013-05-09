@@ -47,6 +47,7 @@
 @protocol FirefeedDelegate <NSObject>
 
 - (void) loginStateDidChange:(FirefeedUser *)user;
+- (void) loginAttemptDidFail;
 - (void) spark:(FirefeedSpark *)spark wasAddedToTimeline:(NSString *)timeline;
 - (void) spark:(FirefeedSpark *)spark wasOverflowedFromTimeline:(NSString *)timeline;
 - (void) spark:(FirefeedSpark *)spark wasUpdatedInTimeline:(NSString *)timeline;

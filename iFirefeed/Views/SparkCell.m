@@ -29,17 +29,14 @@
     // Configure the view for the selected state
 }
 
-- (void) configureForSpark:(FirefeedSpark *)spark atRow:(NSInteger)row target:(id)target selector:(SEL)selector {
+- (void) configureForSpark:(FirefeedSpark *)spark {
 
     self.contentTextView.text = spark.content;
     self.contentTextView.contentOffset = CGPointZero;
     self.contentTextView.contentInset = UIEdgeInsetsMake(-10, -5, -5, -5);
+    self.contentTextView.userInteractionEnabled = NO;
     self.authorLabel.text = spark.authorName;
     [self.profileImage setImageWithURL:spark.authorPicURL placeholderImage:[UIImage imageNamed:@"placekitten.png"]];
-    self.profileButton.tag = row;
-    if (target && selector) {
-        [self.profileButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-    }
     NSTimeInterval interval = spark.timestamp / 1000.0;
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:interval];
     NSString* dateString = [self.dateFormatter stringFromDate:date];

@@ -11,7 +11,7 @@
 
 @interface SparkCell : UITableViewCell
 
-- (void) configureForSpark:(FirefeedSpark *)spark atRow:(NSInteger)row target:(id)target selector:(SEL)selector;
+- (void) configureForSpark:(FirefeedSpark *)spark;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;

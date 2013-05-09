@@ -11,11 +11,9 @@
 
 @interface UserCell : UITableViewCell
 
-- (void) configureForUser:(FirefeedUser *)user atRow:(NSInteger)row;
-- (void) configureForUser:(FirefeedUser *)user atRow:(NSInteger)row target:(id)target selector:(SEL)selector;
+- (void) configureForUser:(FirefeedUser *)user;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePic;
-@property (weak, nonatomic) IBOutlet UIButton *profileButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *bioText;
 
