@@ -41,6 +41,8 @@
 		375C5E80170D324100BB1CE9 /* SparkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 375C5E7F170D324100BB1CE9 /* SparkCell.xib */; };
 		375C5E83170E2F2F00BB1CE9 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 375C5E82170E2F2F00BB1CE9 /* ProfileViewController.m */; };
 		375C5E85170E3ABE00BB1CE9 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 375C5E84170E3ABE00BB1CE9 /* ProfileViewController.xib */; };
+		37802F5B173C5A1D00F5D48F /* logo-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 37802F5A173C5A1D00F5D48F /* logo-144.png */; };
+		37802F5D173C5A5400F5D48F /* logo-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 37802F5C173C5A5400F5D48F /* logo-72.png */; };
 		379D074F170E7FE100FB2335 /* placekitten_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 379D074E170E7FE100FB2335 /* placekitten_large.png */; };
 		379D0751170F708400FB2335 /* logo-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 379D0750170F708400FB2335 /* logo-32.png */; };
 		379D0758170FA02C00FB2335 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D0757170FA02C00FB2335 /* UserCell.m */; };
@@ -126,6 +128,8 @@
 		375C5E81170E2F2E00BB1CE9 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileViewController.h; path = Views/ProfileViewController.h; sourceTree = "<group>"; };
 		375C5E82170E2F2F00BB1CE9 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileViewController.m; path = Views/ProfileViewController.m; sourceTree = "<group>"; };
 		375C5E84170E3ABE00BB1CE9 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileViewController.xib; path = Views/ProfileViewController.xib; sourceTree = "<group>"; };
+		37802F5A173C5A1D00F5D48F /* logo-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-144.png"; sourceTree = "<group>"; };
+		37802F5C173C5A5400F5D48F /* logo-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-72.png"; sourceTree = "<group>"; };
 		379D074E170E7FE100FB2335 /* placekitten_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placekitten_large.png; path = Resources/placekitten_large.png; sourceTree = "<group>"; };
 		379D0750170F708400FB2335 /* logo-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo-32.png"; path = "Resources/logo-32.png"; sourceTree = "<group>"; };
 		379D0756170FA02C00FB2335 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserCell.h; path = Views/UserCell.h; sourceTree = "<group>"; };
@@ -208,6 +212,8 @@
 		375C5E1F170B8F2400BB1CE9 = {
 			isa = PBXGroup;
 			children = (
+				37802F5C173C5A5400F5D48F /* logo-72.png */,
+				37802F5A173C5A1D00F5D48F /* logo-144.png */,
 				37550CCC17383A73008E2928 /* logo-114.png */,
 				375C5E31170B8F2400BB1CE9 /* iFirefeed */,
 				375C5E2A170B8F2400BB1CE9 /* Frameworks */,
@@ -466,6 +472,8 @@
 				379D07A31717609800FB2335 /* edit.png in Resources */,
 				379D07A71717687100FB2335 /* logo-57.png in Resources */,
 				37550CCD17383A73008E2928 /* logo-114.png in Resources */,
+				37802F5B173C5A1D00F5D48F /* logo-144.png in Resources */,
+				37802F5D173C5A5400F5D48F /* logo-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
