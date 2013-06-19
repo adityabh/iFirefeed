@@ -45,8 +45,6 @@
 }
 
 - (void) loginAttemptDidFail {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Login Error" message:@"iFirefeed requires a Facebook account to be associated with this device" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-    [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
     self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 

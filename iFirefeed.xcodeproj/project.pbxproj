@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3706C17417342F5300DA825A /* NSMutableArray+Sorted.m in Sources */ = {isa = PBXBuildFile; fileRef = 3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */; };
+		371145711745B6F200C26B5B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371145701745B6F200C26B5B /* AdSupport.framework */; };
+		371145731745B71400C26B5B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 371145721745B71400C26B5B /* libsqlite3.dylib */; };
 		371D192D1726E557009D0D7D /* UserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192C1726E557009D0D7D /* UserSearchViewController.m */; };
 		371D193017271304009D0D7D /* FirefeedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192F17271304009D0D7D /* FirefeedSearch.m */; };
 		37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37550CC817380C1A008E2928 /* Crashlytics.framework */; };
@@ -52,7 +54,6 @@
 		379D07621713631000FB2335 /* ProfileEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379D07611713631000FB2335 /* ProfileEditController.xib */; };
 		379D076617136D5200FB2335 /* RecentSparksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D076417136D5200FB2335 /* RecentSparksViewController.m */; };
 		379D076717136D5200FB2335 /* RecentSparksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379D076517136D5200FB2335 /* RecentSparksViewController.xib */; };
-		379D076B171383CC00FB2335 /* FirebaseAuthClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 379D076A171383CC00FB2335 /* FirebaseAuthClient.framework */; };
 		379D076E17138AFE00FB2335 /* FirefeedAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D076D17138AFE00FB2335 /* FirefeedAuth.m */; };
 		379D077117149D5C00FB2335 /* SparkListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D077017149D5C00FB2335 /* SparkListViewController.m */; };
 		379D07891716118400FB2335 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D07751716118400FB2335 /* MKAnnotationView+WebCache.m */; };
@@ -75,11 +76,16 @@
 		379D07A71717687100FB2335 /* logo-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 379D07A61717687100FB2335 /* logo-57.png */; };
 		379D07AF1717934F00FB2335 /* MOButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D07AC1717934F00FB2335 /* MOButton.m */; };
 		379D07B01717934F00FB2335 /* MOGlassButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D07AE1717934F00FB2335 /* MOGlassButton.m */; };
+		37E5788C17726CF700E17C7D /* FirebaseAuthClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788B17726CF700E17C7D /* FirebaseAuthClient.framework */; };
+		37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788D17726D3700E17C7D /* FacebookSDK.framework */; };
+		37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3706C17217342F5200DA825A /* NSMutableArray+Sorted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Sorted.h"; sourceTree = "<group>"; };
 		3706C17317342F5200DA825A /* NSMutableArray+Sorted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Sorted.m"; sourceTree = "<group>"; };
+		371145701745B6F200C26B5B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		371145721745B71400C26B5B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		371D192B1726E557009D0D7D /* UserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserSearchViewController.h; path = Views/UserSearchViewController.h; sourceTree = "<group>"; };
 		371D192C1726E557009D0D7D /* UserSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserSearchViewController.m; path = Views/UserSearchViewController.m; sourceTree = "<group>"; };
 		371D192E17271304009D0D7D /* FirefeedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirefeedSearch.h; sourceTree = "<group>"; };
@@ -143,7 +149,6 @@
 		379D076317136D5200FB2335 /* RecentSparksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentSparksViewController.h; path = Views/RecentSparksViewController.h; sourceTree = "<group>"; };
 		379D076417136D5200FB2335 /* RecentSparksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecentSparksViewController.m; path = Views/RecentSparksViewController.m; sourceTree = "<group>"; };
 		379D076517136D5200FB2335 /* RecentSparksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RecentSparksViewController.xib; path = Views/RecentSparksViewController.xib; sourceTree = "<group>"; };
-		379D076A171383CC00FB2335 /* FirebaseAuthClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAuthClient.framework; path = "../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Debug-iphonesimulator/FirebaseAuthClient.framework"; sourceTree = "<group>"; };
 		379D076C17138AFD00FB2335 /* FirefeedAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirefeedAuth.h; sourceTree = "<group>"; };
 		379D076D17138AFE00FB2335 /* FirefeedAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirefeedAuth.m; sourceTree = "<group>"; };
 		379D076F17149D5C00FB2335 /* SparkListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkListViewController.h; path = Views/SparkListViewController.h; sourceTree = "<group>"; };
@@ -182,6 +187,9 @@
 		379D07AC1717934F00FB2335 /* MOButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOButton.m; sourceTree = "<group>"; };
 		379D07AD1717934F00FB2335 /* MOGlassButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOGlassButton.h; sourceTree = "<group>"; };
 		379D07AE1717934F00FB2335 /* MOGlassButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOGlassButton.m; sourceTree = "<group>"; };
+		37E5788B17726CF700E17C7D /* FirebaseAuthClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAuthClient.framework; sourceTree = "<group>"; };
+		37E5788D17726D3700E17C7D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = FacebookSDK.framework/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +197,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Frameworks */,
+				37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */,
+				371145731745B71400C26B5B /* libsqlite3.dylib in Frameworks */,
+				371145711745B6F200C26B5B /* AdSupport.framework in Frameworks */,
 				379D07961716148000FB2335 /* MapKit.framework in Frameworks */,
 				379D07941716141A00FB2335 /* ImageIO.framework in Frameworks */,
 				375C5E6E170CC87B00BB1CE9 /* QuartzCore.framework in Frameworks */,
@@ -200,9 +212,9 @@
 				375C5E2C170B8F2400BB1CE9 /* UIKit.framework in Frameworks */,
 				375C5E2E170B8F2400BB1CE9 /* Foundation.framework in Frameworks */,
 				375C5E30170B8F2400BB1CE9 /* CoreGraphics.framework in Frameworks */,
-				379D076B171383CC00FB2335 /* FirebaseAuthClient.framework in Frameworks */,
 				37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */,
 				37550CCB17381927008E2928 /* Firebase.framework in Frameworks */,
+				37E5788C17726CF700E17C7D /* FirebaseAuthClient.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,11 +244,15 @@
 		375C5E2A170B8F2400BB1CE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */,
+				37E5788D17726D3700E17C7D /* FacebookSDK.framework */,
+				37E5788B17726CF700E17C7D /* FirebaseAuthClient.framework */,
+				371145721745B71400C26B5B /* libsqlite3.dylib */,
+				371145701745B6F200C26B5B /* AdSupport.framework */,
 				37550CCA17381927008E2928 /* Firebase.framework */,
 				37550CC817380C1A008E2928 /* Crashlytics.framework */,
 				379D07951716148000FB2335 /* MapKit.framework */,
 				379D07931716141A00FB2335 /* ImageIO.framework */,
-				379D076A171383CC00FB2335 /* FirebaseAuthClient.framework */,
 				375C5E6D170CC87B00BB1CE9 /* QuartzCore.framework */,
 				375C5E5C170B967300BB1CE9 /* Social.framework */,
 				375C5E5A170B966A00BB1CE9 /* Accounts.framework */,
@@ -617,6 +633,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../deploy\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../Documents/FacebookSDK\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Release-iphoneos\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/facebook-ios-sdk-flwbkjfuielmfvcadsdogqqvtkwj/Build/Products/Debug-iphoneos\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iFirefeed/iFirefeed-Prefix.pch";
@@ -635,6 +654,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../deploy\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../Documents/FacebookSDK\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FirebaseAuthClient-cqsjvbblxhviqnbvqdrxblupiwew/Build/Products/Release-iphoneos\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/facebook-ios-sdk-flwbkjfuielmfvcadsdogqqvtkwj/Build/Products/Debug-iphoneos\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iFirefeed/iFirefeed-Prefix.pch";

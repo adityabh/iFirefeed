@@ -72,10 +72,10 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
         // Auth handled via a global singleton. Prevents modules squashing eachother
         [FirefeedAuth watchAuthForRef:self.root withBlock:^(NSError *error, FAUser *user) {
             if (error) {
-                NSLog(@"ERROR: %@", error);
                 if (error.code == FAErrorAccountNotFound) {
-                    [weakSelf.delegate loginAttemptDidFail];
+                    NSLog(@"ERROR: %@", error);
                 }
+                [weakSelf.delegate loginAttemptDidFail];
             } else {
                 [weakSelf onAuthStatus:user];
             }

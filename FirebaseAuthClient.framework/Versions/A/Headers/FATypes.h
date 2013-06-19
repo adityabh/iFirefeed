@@ -36,6 +36,7 @@ typedef enum {
     FAErrorAccountNotFound = -4,
     FAErrorAuthenticationProviderNotEnabled = -5,
     FAErrorInvalidEmail = -6,
+    FAErrorBadSystemToken = -7,
     FAErrorUnknown = -9999
 } FAError;
 

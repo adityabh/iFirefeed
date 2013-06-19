@@ -122,6 +122,7 @@
  */
 - (void) loginToFacebookAppWithId:(NSString *)appId permissions:(NSArray *)permissions audience:(NSString *)audience withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
 
+- (void) createFacebookUserWithToken:(NSString *)token appId:(NSString *)appId withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
 
 /** @name Twitter authentication methdos */
 

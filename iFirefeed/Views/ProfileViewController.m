@@ -222,7 +222,6 @@
     [self highlightSelectedSegment];
     [self.tableView reloadData];
     [self.tableView setContentOffset:CGPointZero animated:NO];
-    NSLog(@"Segment selected");
 }
 
 - (void)didReceiveMemoryWarning
