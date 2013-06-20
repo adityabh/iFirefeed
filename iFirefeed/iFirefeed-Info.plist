@@ -49,9 +49,7 @@
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb104907529680402</string>
-			</array>
+			<array/>
 		</dict>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>

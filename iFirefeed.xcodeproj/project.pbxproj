@@ -78,7 +78,7 @@
 		379D07B01717934F00FB2335 /* MOGlassButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D07AE1717934F00FB2335 /* MOGlassButton.m */; };
 		37E5788C17726CF700E17C7D /* FirebaseAuthClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788B17726CF700E17C7D /* FirebaseAuthClient.framework */; };
 		37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788D17726D3700E17C7D /* FacebookSDK.framework */; };
-		37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */; };
+		37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,7 +197,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Frameworks */,
 				37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */,
 				371145731745B71400C26B5B /* libsqlite3.dylib in Frameworks */,
 				371145711745B6F200C26B5B /* AdSupport.framework in Frameworks */,
@@ -469,6 +468,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Resources */,
 				375C5E36170B8F2400BB1CE9 /* InfoPlist.strings in Resources */,
 				375C5E3E170B8F2400BB1CE9 /* Default.png in Resources */,
 				375C5E40170B8F2400BB1CE9 /* Default@2x.png in Resources */,
