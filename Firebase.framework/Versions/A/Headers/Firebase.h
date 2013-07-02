@@ -33,6 +33,7 @@
 #import "FMutableData.h"
 #import "FTransactionResult.h"
 
+
 /**
  * A Firebase reference represents a particular location in your Firebase
  * and can be used for reading or writing data to that Firebase location.
@@ -102,10 +103,20 @@ all data at this location or any child location will be deleted.
 
 Note that setValue: will remove any priority stored at this location, so if priority
 is meant to be preserved, you should use setValue:andPriority: instead.
+
+
+**Server Values** - Placeholder values you may write into Firebase as a value or priority
+that will automatically be populated by the Firebase Server.
+
+- kFirebaseServerValueTimestamp - The number of milliseconds since the Unix epoch
+
  
 @param value The value to be written.
  */
 - (void) setValue:(id)value;
+
+
+#define kFirebaseServerValueTimestamp @{ @".sv": @"timestamp" }
 
 
 /**

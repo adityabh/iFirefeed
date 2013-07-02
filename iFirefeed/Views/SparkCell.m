@@ -30,7 +30,7 @@
 }
 
 - (void) configureForSpark:(FirefeedSpark *)spark {
-
+    // Map the data in the spark to our view.
     self.contentTextView.text = spark.content;
     self.contentTextView.contentOffset = CGPointZero;
     self.contentTextView.contentInset = UIEdgeInsetsMake(-10, -5, -5, -5);

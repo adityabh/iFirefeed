@@ -78,15 +78,18 @@
 
 
 - (void) searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+    // Done searching, no user was selected
     [self.delegate searchWasCancelled];
 }
 
 
 - (BOOL) searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    // Pass through to the search handler
     return [self.firefeedSearch searchTextDidUpdate:searchString];
 }
 
 - (void) userIdWasSelected:(NSString *)userId {
+    // Done searching, a user was selected
     [self.delegate userWasSelected:userId];
 }
 

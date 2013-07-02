@@ -20,11 +20,13 @@
 
 typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
 
-+ (FirefeedUser *) loadFromRoot:(Firebase *)root withUserId:(NSString *)userId completionBlock:(void (^)(FirefeedUser *))block {
++ (FirefeedUser *) loadFromRoot:(Firebase *)root withUserId:(NSString *)userId completionBlock:(ffbt_void_ffuser)block {
+    // Create basic user data from what we already know and pass through
     return [self loadFromRoot:root withUserData:@{@"userId": userId} completionBlock:block];
 }
 
 + (FirefeedUser *) loadFromRoot:(Firebase *)root withUserData:(NSDictionary *)userData completionBlock:(ffbt_void_ffuser)block {
+    // Create a new FirefeedUser instance pointed at the given location, with the given initial data, and setup the callback for when it updates
     ffbt_void_ffuser userBlock = [block copy];
     NSString* userId = [userData objectForKey:@"userId"];
     Firebase* peopleRef = [[root childByAppendingPath:@"people"] childByAppendingPath:userId];
@@ -37,12 +39,14 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
     if (self) {
         self.loaded = NO;
         self.userId = ref.name;
+        // Setup any initial data that we already have
         self.bio = [userData objectForKey:@"bio"];
         self.firstName = [userData objectForKey:@"firstName"];
         self.lastName = [userData objectForKey:@"lastName"];
         self.fullName = [userData objectForKey:@"fullName"];
         self.location = [userData objectForKey:@"location"];
         self.ref = ref;
+        // Load the actual data from Firebase
         self.valueHandle = [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
 
             id val = snapshot.value;
@@ -74,9 +78,10 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
 
 
             if (self.loaded) {
-                // just call the delegate
+                // just call the delegate for updates
                 [self.delegate userDidUpdate:self];
             } else {
+                // Trigger the block for the initial load
                 userBlock(self);
             }
             self.loaded = YES;
@@ -146,6 +151,7 @@ typedef void (^ffbt_void_ffuser)(FirefeedUser* user);
     return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture/?return_ssl_resources=1&width=48&height=48", self.userId]];
 }
 
+// Override so that we can find other objects pointed at the same user
 - (BOOL) isEqual:(id)object {
     return [object isKindOfClass:[self class]] && [self.userId isEqualToString:[object userId]];
 }

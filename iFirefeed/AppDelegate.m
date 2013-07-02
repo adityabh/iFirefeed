@@ -19,8 +19,8 @@
 {
     [Crashlytics startWithAPIKey:@"19a9a2eacc330393b337b28ae42dcc90041d6156"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
 
+    // Quick printout of the various versions and some basic info about the app
     [Firefeed logDiagnostics];
 
     // Set up some appearances

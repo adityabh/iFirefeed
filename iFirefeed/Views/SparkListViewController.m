@@ -154,7 +154,7 @@
     if (text) {
         // Post the text
         [self.firefeed postSpark:text completionBlock:^(NSError *err) {
-            // TODO: a toast here? Notification of some sort?
+            // The spark has been posted and fanned out
         }];
     } else {
         // user cancelled
@@ -162,7 +162,7 @@
     [composeViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-
+// The next few methods manage the table of sparks
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 72.0f;
 }

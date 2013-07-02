@@ -12,6 +12,7 @@
 typedef void (^ffbt_void_nserror_user)(NSError* error, FAUser* user);
 typedef void (^ffbt_void_void)(void);
 
+// This class manages multiple concurrent auth requests (login, logout, status) against the same Firebase
 @interface FirefeedAuthData : NSObject {
     NSMutableDictionary* _blocks;
     Firebase* _ref;
@@ -37,6 +38,7 @@ typedef void (^ffbt_void_void)(void);
         _luid = 1;
         _ref = ref;
         _user = nil;
+        // Keep an eye on what Firebase says our authentication status is
         _authHandle = [[_ref childByAppendingPath:@".info/authenticated"] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
 
             if (![(NSNumber *)snapshot.value boolValue] && _user != nil) {
@@ -56,6 +58,7 @@ typedef void (^ffbt_void_void)(void);
 
 - (void) dealloc {
     if (_authHandle != NSNotFound) {
+        // Stop watching the authenticated endpoint so we don't leak memory
         [[_ref childByAppendingPath:@".info/authenticated"] removeObserverWithHandle:_authHandle];
     }
 }
@@ -65,14 +68,14 @@ typedef void (^ffbt_void_void)(void);
 
         [self onAuthStatusError:error user:user];
         if (user) {
-            // TODO: is there a better place to put this?
-            // Populate the search indices
+            // Populate the search indices if we got a user
             [self populateSearchIndicesForUser:user];
         }
     }];
 }
 
 - (void) populateSearchIndicesForUser:(FAUser *)user {
+    // For each user, we list them in the search index twice. Once by first name and once by last name. We include the id at the end to guarantee uniqueness
     Firebase* firstNameRef = [_ref.root childByAppendingPath:@"search/firstName"];
     Firebase* lastNameRef = [_ref.root childByAppendingPath:@"search/lastName"];
 
@@ -86,6 +89,7 @@ typedef void (^ffbt_void_void)(void);
 }
 
 - (void) logout {
+    // Pass through to FirebaseSimpleAuth
     [_authClient logout];
 }
 
@@ -96,13 +100,14 @@ typedef void (^ffbt_void_void)(void);
 
     [_blocks setObject:block forKey:luid];
     if (_user) {
+        // we already have a user logged in
         // force async to be consistent
         ffbt_void_void cb = ^{
             block(nil, _user);
         };
         [self performSelector:@selector(executeCallback:) withObject:[cb copy] afterDelay:0];
     } else if (_blocks.count == 1) {
-        // This is the first block for this firebase
+        // This is the first block for this firebase, kick off the login process
         [_authClient checkAuthStatusWithBlock:^(NSError *error, FAUser *user) {
             [self onAuthStatusError:error user:user];
         }];
@@ -124,12 +129,13 @@ typedef void (^ffbt_void_void)(void);
     }
     
     for (NSNumber* handle in _blocks) {
+        // tell everyone who's listening
         ffbt_void_nserror_user block = [_blocks objectForKey:handle];
         block(error, user);
     }
 }
 
-// Used w/ performSelector
+// Used w/ performSelector. Basically a hack to execute a block asynchronously
 - (void) executeCallback:(ffbt_void_void)callback {
     callback();
 }
@@ -145,6 +151,7 @@ typedef void (^ffbt_void_void)(void);
 @implementation FirefeedAuth
 
 + (FirefeedAuth *) singleton {
+    // We use a singleton here so that we only have one FirebaseSimpleLogin instance
     static dispatch_once_t pred;
     static FirefeedAuth* theSingleton;
     dispatch_once(&pred, ^{
@@ -153,6 +160,7 @@ typedef void (^ffbt_void_void)(void);
     return theSingleton;
 }
 
+// Pass-through methods to the singleton
 + (long) watchAuthForRef:(Firebase *)ref withBlock:(void (^)(NSError *, FAUser *))block {
     return [[self singleton] checkAuthForRef:ref withBlock:block];
 }
@@ -181,18 +189,19 @@ typedef void (^ffbt_void_void)(void);
 
     NSString* firebaseId = ref.root.description;
 
+    // Pass to the FirefeedAuthData object, which manages multiple auth requests against the same Firebase
     FirefeedAuthData* authData = [self.firebases objectForKey:firebaseId];
     if (!authData) {
         authData = [[FirefeedAuthData alloc] initWithRef:ref.root];
         [self.firebases setObject:authData forKey:firebaseId];
     }
-
     [authData loginToAppWithId:appId];
 }
 
 - (void) logoutRef:(Firebase *)ref {
     NSString* firebaseId = ref.root.description;
 
+    // Pass to the FirefeedAuthData object, which manages multiple auth requests against the same Firebase
     FirefeedAuthData* authData = [self.firebases objectForKey:firebaseId];
     if (!authData) {
         authData = [[FirefeedAuthData alloc] initWithRef:ref.root];
@@ -206,6 +215,7 @@ typedef void (^ffbt_void_void)(void);
 - (void) stopWatchingAuthForRef:(Firebase *)ref withHandle:(long)handle {
     NSString* firebaseId = ref.root.description;
 
+    // Pass to the FirefeedAuthData object, which manages multiple auth requests against the same Firebase
     FirefeedAuthData* authData = [self.firebases objectForKey:firebaseId];
     if (authData) {
         [authData stopWatchingAuthStatus:handle];
@@ -216,6 +226,7 @@ typedef void (^ffbt_void_void)(void);
     ffbt_void_nserror_user userBlock = [block copy];
     NSString* firebaseId = ref.root.description;
 
+    // Pass to the FirefeedAuthData object, which manages multiple auth requests against the same Firebase
     FirefeedAuthData* authData = [self.firebases objectForKey:firebaseId];
     if (!authData) {
         authData = [[FirefeedAuthData alloc] initWithRef:ref.root];

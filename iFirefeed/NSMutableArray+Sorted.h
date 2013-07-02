@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+// Add a basic sorting function to NSMutableArray
 @interface NSMutableArray (Sorted)
 
 - (void) insertSorted:(id)newObject;

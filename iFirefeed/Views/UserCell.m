@@ -29,7 +29,7 @@
 
 
 - (void) configureForUser:(FirefeedUser *)user {
-
+    // Bind a FirefeedUser to this view
     self.nameLabel.text = user.fullName;
     [self.profilePic setImageWithURL:user.picURLSmall placeholderImage:[UIImage imageNamed:@"placekitten.png"]];
     self.bioText.contentOffset = CGPointZero;

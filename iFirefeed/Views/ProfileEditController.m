@@ -74,6 +74,7 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
 }
 
 - (void) logout {
+    // Log out was pressed, log out of firefeed
     [self.firefeed logout];
 }
 
@@ -104,6 +105,7 @@ typedef enum {BIO, LOCATION, NONE} UserProperty;
         } else if (self.currentlyEditing == LOCATION) {
             self.user.location = text;
         }
+        // Save any updates that were made. 
         [self.firefeed saveUser:self.user];
     }
     [composeViewController dismissViewControllerAnimated:YES completion:nil];

@@ -48,6 +48,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
 
 + (void) logDiagnostics {
+    // Quick dump of some relevant info about the app
     NSLog(@"Running w/ Firebase %@", [Firebase sdkVersion]);
     NSLog(@"Running w/ FirebaseSimpleLogin %@", [FirebaseSimpleLogin sdkVersion]);
     NSLog(@"bundle id: %@", [NSBundle mainBundle].bundleIdentifier);
@@ -60,12 +61,11 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
         self.root = [[Firebase alloc] initWithUrl:rootUrl];
 
         __weak Firefeed* weakSelf = self;
+        // Get an idea of what the actual time is from the Firebase servers
         self.timeOffsetHandle = [[self.root childByAppendingPath:@".info/serverTimeOffset"] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
 
-            id val = snapshot.value;
-            if (val != [NSNull null]) {
-                weakSelf.serverTimeOffset = [(NSNumber *)val longValue];
-            }
+            weakSelf.serverTimeOffset = [(NSNumber *)snapshot.value longValue];
+
         }];
         self.serverTimeOffset = 0;
 
@@ -90,10 +90,12 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
 
 - (void) dealloc {
+    // Stop watching the time offset so we don't leak memory
     [[self.root childByAppendingPath:@".info/serverTimeOffset"] removeObserverWithHandle:_timeOffsetHandle];
 }
 
 - (void) cleanup {
+    // Clean up all of our listeners so we don't leak memory
     for (NSString* url in self.feeds) {
         FeedHandlers* handle = [self.feeds objectForKey:url];
         [self stopObservingFeed:handle];
@@ -105,6 +107,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) stopObservingFeed:(FeedHandlers *)handle {
+    // We track two separate events, and possibly a user as well. Remove all the listeners
     [handle.ref removeObserverWithHandle:handle.childAddedHandle];
     [handle.ref removeObserverWithHandle:handle.childRemovedHandle];
     if (handle.user) {
@@ -113,6 +116,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) stopObservingLoginStatus {
+    // If we were logged in, remove the listener for auth status
     if (self.loggedInUser) {
         [self.loggedInUser stopObserving];
         self.loggedInUser = nil;
@@ -120,6 +124,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) cleanupUsers {
+    // Remove listeners for all of the users we're watching
     for (FirefeedUser* user in self.users) {
         [user stopObserving];
     }
@@ -127,6 +132,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) cleanupSparks {
+    // Remove listeners for all of the sparks we're watching
     for (FirefeedSpark* spark in self.sparks) {
         [spark stopObserving];
     }
@@ -134,6 +140,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) logListens {
+    // Debug method. See what data we're observing
     NSLog(@"Firefeed outstanding observers");
     for (NSString* key in self.feeds) {
         NSLog(@"Feed: %@", key);
@@ -176,6 +183,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
         }];
 
     } else {
+        // There is no user logged in. If we had one before, remove the observers
         if (self.loggedInUser) {
             [self.loggedInUser stopObserving];
         }
@@ -186,6 +194,8 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) observeFolloweesForUser:(NSString *)userId {
+    // This method sets up observers followees being added and removed. Each followee that is added is observed individually
+
     __weak Firefeed* weakSelf = self;
 
     [FirefeedUser loadFromRoot:self.root withUserId:userId completionBlock:^(FirefeedUser *followingUser) {
@@ -227,6 +237,8 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
 
 - (void) observeFollowersForUser:(NSString *)userId {
+    // This method sets up observers followers being added and removed. Each follower that is added is observed individually
+
     __weak Firefeed* weakSelf = self;
     [FirefeedUser loadFromRoot:self.root withUserId:userId completionBlock:^(FirefeedUser *followedUser) {
         Firebase* ref = [[[self.root childByAppendingPath:@"users"] childByAppendingPath:userId] childByAppendingPath:@"followers"];
@@ -266,6 +278,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (NSString *) observeFeed:(Firebase *)ref withCount:(NSUInteger)count {
+    // Watch a limited number of sparks in a particular feed
     FQuery* query = [ref queryLimitedToNumberOfChildren:count];
 
     NSString* feedId = ref.description;
@@ -294,9 +307,10 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     }];
 
     FirebaseHandle childRemovedHandle = [query observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
-        // TODO: overflow the spark from the timeline
+        // TODO: handle overflowing a spark out of the feed. In this app, we keep them in the table so that they are still visible
     }];
 
+    // Since value events fire after child events, this observer lets us know when we've gotten a good initial snapshot of the data
     [query observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         [weakSelf.delegate timelineDidLoad:feedId];
     }];
@@ -311,6 +325,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
 
 - (void) stopObservingTimeline:(NSString *)timeline {
+    // Part of cleanup, remove observers so we don't leak memory
     FeedHandlers* handlers = [self.feeds objectForKey:timeline];
     if (handlers) {
         [self stopObservingFeed:handlers];
@@ -319,11 +334,13 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (NSString *) observeSparksForUser:(NSString *)userId {
+    // Used when looking at a profile, show 50 most recent sparks
     Firebase* ref = [[[self.root childByAppendingPath:@"users"] childByAppendingPath:userId] childByAppendingPath:@"sparks"];
     return [self observeFeed:ref withCount:50];
 }
 
 - (NSString *) observeLoggedInUserTimeline {
+    // Show the home feed for the logged in user
     if (!self.loggedInUser) {
         return nil;
     } else {
@@ -333,17 +350,20 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (NSString *) observeLatestSparks {
+    // Grab the latest from the global firehose of latest sparks
     Firebase* ref = [self.root childByAppendingPath:@"recent-sparks"];
-    return [self observeFeed:ref withCount:50];
+    return [self observeFeed:ref withCount:100];
 }
 
 
-
 - (double) currentTimestamp {
+    // Incorporate the timestamp from Firebase to get a good estimate of the time
     return ([[NSDate date] timeIntervalSince1970] * 1000.0) + self.serverTimeOffset;
 }
 
 - (void) postSpark:(NSString *)text completionBlock:(ffbt_void_nserror)block {
+    // Post a spark and fan it out to the relevant locations
+
     Firebase* sparkRef = [[self.root childByAppendingPath:@"sparks"] childByAutoId];
     NSString* sparkRefId = sparkRef.name;
 
@@ -383,6 +403,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) observeUserInfo:(NSString *)userId {
+    // Observe the profile data of a single user
     __weak Firefeed* weakSelf = self;
     FirefeedUser* user = [FirefeedUser loadFromRoot:weakSelf.root withUserId:userId completionBlock:^(FirefeedUser *user) {
         [weakSelf.delegate userDidUpdate:user];
@@ -391,6 +412,10 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) startFollowingUser:(NSString *)userId {
+    // Performs the necessary operations to follow a user:
+    // 1. Set the followee into the followers list of following
+    // 2. Set the follower into the followee's list of followers
+    // 3. Copy in some recent sparks to fill up the follower's feed
     Firebase* userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:self.loggedInUser.userId];
 
     Firebase* followingRef = [[userRef childByAppendingPath:@"following"] childByAppendingPath:userId];
@@ -411,6 +436,8 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) stopFollowingUser:(NSString *)userId {
+    // We leave the sparks from the followee, but remove the follower from the followee's list of followers
+    // Also, remove the followee from the follower's list of following
     Firebase* userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:self.loggedInUser.userId];
 
     Firebase* followingRef = [[userRef childByAppendingPath:@"following"] childByAppendingPath:userId];
@@ -422,10 +449,12 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 }
 
 - (void) saveUser:(FirefeedUser *)user {
+    // Pass through to the user object to update itself
     [user updateFromRoot:self.root];
 }
 
 - (void) userDidUpdate:(FirefeedUser *)user {
+    // Pass through to our delegate that a user was updated
     [self.delegate userDidUpdate:user];
 }
 

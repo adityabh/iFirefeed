@@ -23,6 +23,7 @@
 
 @end
 
+// Small extensions to NSString for some ease-of-use in searching
 @interface NSString (FirefeedSearch)
 
 - (NSString *) nextLowerCaseKey;
@@ -58,6 +59,7 @@
 
 @end
 
+// Encapsulate a search result
 @interface SearchResult : NSObject
 
 @property (strong, nonatomic) NSString* name;
@@ -105,6 +107,7 @@
 
 @implementation NameSearch
 
+// Set up a new search with a given term
 - (id) initWithRef:(Firebase *)ref andStem:(NSString *)stem {
     self = [super init];
     if (self) {
@@ -119,10 +122,14 @@
     return self;
 }
 
+// Given the term that was used to create the search, create the various permutations that we want to query over
+// We do this so we can allow spaces in first and last names without automatically assuming that a space delimits the two
+
 - (NSArray *) generateStems:(NSString *)stem {
     stem = [[stem substringToIndex:CHAR_THRESHOLD] lowercaseString];
     NSMutableArray* stems = [[NSMutableArray alloc] init];
     [stems addObject:stem];
+    // For each character, if it's a space, add a permutation that includes the delimiter instead of the space
     for (int i = 0; i < CHAR_THRESHOLD; ++i) {
         unichar c = [stem characterAtIndex:i];
         if (c == ' ') {
@@ -142,6 +149,9 @@
     }
 }
 
+// For a given stem, create a window between the stem and the next valid key of the same length, alphabetically.
+// Return anything inbetween as a first name search result
+// Then, do it a second time for last name search
 - (void) startSearchForStem:(NSString *)stem {
     __weak NameSearch* weakSelf = self;
     NSString* endKey = [stem nextLowerCaseKey];
@@ -174,6 +184,8 @@
     }
 }
 
+// The next two methods do some matching clientside to see if this result matches what the user has typed.
+// Since we don't update our search criteria when the user types more characters, we have to potenitially filter out some results clientside
 - (void) newFirstNameResult:(FDataSnapshot *)snapshot {
     SearchResult* result = [[SearchResult alloc] init];
     result.userId = snapshot.value;
@@ -187,8 +199,7 @@
 
 - (void) newLastNameResult:(FDataSnapshot *)snapshot {
     SearchResult* result = [[SearchResult alloc] init];
-    result.userId = snapshot.value;
-    // need to figure out how to handle this
+    result.userId = snapshot.value;    
     NSArray* segments = [[snapshot.name stringByReplacingOccurrencesOfString:@"," withString:@"."] componentsSeparatedByString:@"|"];
     result.name = [NSString stringWithFormat:@"%@, %@", [segments objectAtIndex:0], [segments objectAtIndex:1]];
     [_lastNameResults addObject:result];
@@ -197,6 +208,8 @@
     }
 }
 
+// Go through all of our search results and determine which ones match the current term that the user has typed in the search box
+// Send these to the delegate
 - (void) raiseFilteredResults {
     NSMutableArray* results = [[NSMutableArray alloc] init];
     for (SearchResult* result in _firstNameResults) {
@@ -212,6 +225,7 @@
     [self.delegate resultsDidChange:results];
 }
 
+// Check if the given term matches one of our stems
 - (BOOL) containsTerm:(NSString *)term {
     if (term.length < CHAR_THRESHOLD) {
         return NO;
@@ -225,6 +239,7 @@
     }
 }
 
+// Update the term to match against and re-filter all of our results
 - (BOOL) updateTerm:(NSString *)term {
     _term = term;
     [self raiseFilteredResults];
@@ -280,6 +295,7 @@
     [self resultsDidChange:@[]];
 }
 
+// Check basic validity of the search term, and pass it to the search object
 - (BOOL) searchTextDidUpdate:(NSString *)text {
     NSString* term = [text lowercaseString];
     if (![term isValidKey]) {
@@ -300,6 +316,7 @@
     }
 }
 
+// The next few methods deal with managing the table of results
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }

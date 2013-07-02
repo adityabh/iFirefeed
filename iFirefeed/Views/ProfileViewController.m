@@ -40,7 +40,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // TODO: find a better way to set this once. Constant somewhere?
         self.sparksLoaded = NO;
         self.followeesLoaded = NO;
         self.followersLoaded = NO;
@@ -56,6 +55,7 @@
 }
 
 - (void) dealloc {
+    // Make sure we cleanup our listeners when this goes away to prevent memory leaks
     [self.firefeed cleanup];
 }
 
@@ -95,6 +95,7 @@
 
 
 - (void) actionButtonWasPressed {
+    // Handles the follow / unfollow button
     if (self.loggedInUserId) {
         if ([self.userId isEqualToString:self.loggedInUserId]) {
             // no-op, shouldn't show
@@ -184,6 +185,7 @@
 }
 
 - (void) refreshUserData:(FirefeedUser *)user {
+    // handle an update to this user's data.
     [self.profileImage setImageWithURL:user.picUrl placeholderImage:[UIImage imageNamed:@"placekitten_large.png"]];
     self.nameLabel.text = user.fullName;
     NSString* bio = user.bio;
@@ -253,6 +255,8 @@
     }
 }
 
+// The next few methods manage changes in the table of sparks for this user.
+// We don't worry about sparks being overflowed, we'll still keep them in the table, they just won't continue to update
 - (void) spark:(NSDictionary *)spark wasAddedToTimeline:(NSString *)timeline {
     [self.sparks insertSorted:spark];
     if (self.segmentedControl.selectedSegmentIndex == SPARKS_TAB) {
@@ -277,6 +281,9 @@
     
 }
 
+
+// Manage the table of followers and followees for this user
+// After each change, update the action button, since the logged in user may have start or stopped following this user
 - (void) follower:(FirefeedUser *)follower startedFollowing:(FirefeedUser *)followee {
     NSInteger selected = self.segmentedControl.selectedSegmentIndex;
     if ([followee.userId isEqualToString:self.userId]) {
@@ -303,7 +310,6 @@
             [self refreshActionButton];
         }
     } else if ([follower.userId isEqualToString:self.userId]) {
-        // Do something with the following list? or maybe this is handled by observing following, rather than followers...
         if ([self.following containsObject:followee]) {
             [self.following removeObject:followee];
             [self.tableView reloadData];
@@ -338,6 +344,7 @@
 }
 
 - (void) showProfileForRow:(NSInteger)index {
+    // Bind a user to an entry in the table
     NSInteger selected = self.segmentedControl.selectedSegmentIndex;
     if (selected == FOLLOWERS_TAB) {
         FirefeedUser* user = [self.followers objectAtIndex:(self.followers.count - index - 1)];
@@ -356,6 +363,7 @@
     }
 }
 
+// Create table cells for followers
 - (UITableViewCell *) followerCellForRow:(NSInteger)row {
     static NSString *CellIdentifier = @"UserCell";
 
@@ -372,6 +380,7 @@
     return cell;
 }
 
+// Create table cells for followees
 - (UITableViewCell *) followeeCellForRow:(NSInteger)row {
     static NSString *CellIdentifier = @"UserCell";
 
@@ -387,6 +396,7 @@
     return cell;
 }
 
+// Create table cells for sparks
 - (UITableViewCell *) sparkCellForRow:(NSInteger)row {
     static NSString *CellIdentifier = @"ProfileSparkCell";
 

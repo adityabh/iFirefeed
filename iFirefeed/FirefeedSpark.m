@@ -32,6 +32,7 @@ typedef void (^ffbt_void_ffspark)(FirefeedSpark* spark);
     self = [super init];
     if (self) {
         self.ref = ref;
+        // Load the data for this spark from Firebase
         self.valueHandle = [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             id rawVal = snapshot.value;
             if (rawVal == [NSNull null]) {
@@ -50,6 +51,7 @@ typedef void (^ffbt_void_ffspark)(FirefeedSpark* spark);
 }
 
 - (NSComparisonResult) compare:(FirefeedSpark *)other {
+    // If two sparks have the same id, consider them equivalent
     return [self.ref.name compare:other.ref.name];
 }
 
