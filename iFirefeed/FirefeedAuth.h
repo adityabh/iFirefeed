@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FirebaseAuthClient/FirebaseAuthClient.h>
+#import <FirebaseSimpleLogin/FirebaseSimpleLogin.h>
 
 //#define _FB_DEBUG
 

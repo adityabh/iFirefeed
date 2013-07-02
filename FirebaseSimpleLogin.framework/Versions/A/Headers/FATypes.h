@@ -1,5 +1,5 @@
 /*
- * Firebase iOS Auth Client Library
+ * Firebase iOS Simple Login Library
  *
  * Copyright © 2013 Firebase - All Rights Reserved
  * https://www.firebase.com
@@ -26,8 +26,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef FirebaseAuthClient_FATypes_h
-#define FirebaseAuthClient_FATypes_h
+#ifndef FirebaseSimpleLogin_FATypes_h
+#define FirebaseSimpleLogin_FATypes_h
 
 typedef enum {
     FAErrorUserDoesNotExist = -1,

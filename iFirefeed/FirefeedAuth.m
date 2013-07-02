@@ -17,7 +17,7 @@ typedef void (^ffbt_void_void)(void);
     Firebase* _ref;
     long _luid;
     FAUser* _user;
-    FirebaseAuthClient* _authClient;
+    FirebaseSimpleLogin* _authClient;
     FirebaseHandle _authHandle;
 }
 
@@ -46,9 +46,9 @@ typedef void (^ffbt_void_void)(void);
         _blocks = [[NSMutableDictionary alloc] init];
 #ifdef _FB_DEBUG
         SEL hiddenInit = NSSelectorFromString(@"initWithRef:andApiHost:");
-        _authClient = [[FirebaseAuthClient alloc] performSelector:hiddenInit withObject:_ref withObject:@"http://localhost:12000"];
+        _authClient = [[FirebaseSimpleLogin alloc] performSelector:hiddenInit withObject:_ref withObject:@"http://localhost:12000"];
 #else
-        _authClient = [[FirebaseAuthClient alloc] initWithRef:_ref];
+        _authClient = [[FirebaseSimpleLogin alloc] initWithRef:_ref];
 #endif
     }
     return self;

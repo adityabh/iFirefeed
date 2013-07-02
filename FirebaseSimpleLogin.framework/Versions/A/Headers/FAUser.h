@@ -1,5 +1,5 @@
 /*
- * Firebase iOS Auth Client Library
+ * Firebase iOS Simple Login Library
  *
  * Copyright © 2013 Firebase - All Rights Reserved
  * https://www.firebase.com

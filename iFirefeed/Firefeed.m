@@ -8,7 +8,7 @@
 
 #import "Firefeed.h"
 #import <Firebase/Firebase.h>
-#import <FirebaseAuthClient/FirebaseAuthClient.h>
+#import <FirebaseSimpleLogin/FirebaseSimpleLogin.h>
 #import "FirefeedAuth.h"
 #import "FirefeedSpark.h"
 
@@ -49,7 +49,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
 + (void) logDiagnostics {
     NSLog(@"Running w/ Firebase %@", [Firebase sdkVersion]);
-    NSLog(@"Running w/ FirebaseAuthClient %@", [FirebaseAuthClient sdkVersion]);
+    NSLog(@"Running w/ FirebaseSimpleLogin %@", [FirebaseSimpleLogin sdkVersion]);
     NSLog(@"bundle id: %@", [NSBundle mainBundle].bundleIdentifier);
 }
 

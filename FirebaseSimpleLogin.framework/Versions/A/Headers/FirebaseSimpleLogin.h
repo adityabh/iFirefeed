@@ -1,5 +1,5 @@
 /*
- * Firebase iOS Auth Client Library
+ * Firebase iOS Simple Login Library
  *
  * Copyright © 2013 Firebase - All Rights Reserved
  * https://www.firebase.com
@@ -31,16 +31,20 @@
 
 #import "FAUser.h"
 
-@interface FirebaseAuthClient : NSObject
+/**
+ * A FirebaseSimpleLogin client instance for authenticating Firebase references with email / password, Facebook, or Twitter.
+ */
+@interface FirebaseSimpleLogin : NSObject
 
-/** @name Initializing a FirebaseAuthClient instance */
+
+/** @name Initializing a FirebaseSimpleLogin instance */
 
 
 /**
- * You must initialize the auth client with a Firebase reference. The auth client will use that reference to authenticate to the Firebase servers
+ * You must initialize the Simple Login with a Firebase reference. The Simple Login client will use that reference to authenticate to the Firebase servers
  *
  * @param ref A valid Firebase reference
- * @return An initialized instance of FirebaseAuthClient
+ * @return An initialized instance of FirebaseSimpleLogin
  */
 - (id) initWithRef:(Firebase *)ref;
 
@@ -79,7 +83,7 @@
 
 
 /**
- * Remove a user account with the given email and password. 
+ * Remove a user account with the given email and password.
  *
  * @param email The email of the account to be removed
  * @param password The password for the account to be removed
@@ -116,7 +120,7 @@
  * Attempts to log the user in to the Facebook app with the specified appId. The block will be called with the results of the attempt.
  *
  * @param appId The Facebook application id for the app to log into. Make sure that the app has your bundle id registered in the facebook developer console
- * @param permissions An array of strings, specifying the desired permissions for this user. If the array is empty, 'email' permission will be requested 
+ * @param permissions An array of strings, specifying the desired permissions for this user. If the array is empty, 'email' permission will be requested
  * @param audience One of ACFacebookAudienceEveryone, ACFacebookAudienceFriends, ACFacebookAudienceOnlyMe, or nil. Required if your requested permissions include any write access. Assumed to be ACFacebookAudienceOnlyMe is nil is passed
  * @param block A block that will be called with the results of the login attempt
  */
@@ -128,7 +132,7 @@
 
 
 /**
- * Attempts to log the user in to the Twitter app with the specified appId. 
+ * Attempts to log the user in to the Twitter app with the specified appId.
  * Requires a block to handle the case where multiple twitter accounts are registered with the OS. The block will be given an array of usernames and should return
  * the index of the desired account. If, after seeing the list, no account is selected, return NSNotFound.
  *
@@ -143,7 +147,7 @@
 /** @name Global configuration and settings */
 
 /**
- * @return The FirebaseAuthClient SDK version
+ * @return The FirebaseSimpleLogin SDK version
  */
 + (NSString *) sdkVersion;
 

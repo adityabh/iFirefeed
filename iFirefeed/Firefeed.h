@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FirebaseAuthClient/FirebaseAuthClient.h>
 #import "FirefeedUser.h"
 #import "FirefeedSpark.h"
 #import "FirefeedSearch.h"
