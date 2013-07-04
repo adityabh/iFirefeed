@@ -13,7 +13,7 @@
 		371D192D1726E557009D0D7D /* UserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192C1726E557009D0D7D /* UserSearchViewController.m */; };
 		371D193017271304009D0D7D /* FirefeedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D192F17271304009D0D7D /* FirefeedSearch.m */; };
 		374F0481178258B7000CB1F5 /* FirebaseSimpleLogin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374F0480178258B7000CB1F5 /* FirebaseSimpleLogin.framework */; };
-		374F048517837EFC000CB1F5 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374F048417837EFC000CB1F5 /* Firebase.framework */; };
+		374F048717861355000CB1F5 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374F048617861355000CB1F5 /* Firebase.framework */; };
 		37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37550CC817380C1A008E2928 /* Crashlytics.framework */; };
 		37550CCD17383A73008E2928 /* logo-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 37550CCC17383A73008E2928 /* logo-114.png */; };
 		375C5E2C170B8F2400BB1CE9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375C5E2B170B8F2400BB1CE9 /* UIKit.framework */; };
@@ -91,7 +91,7 @@
 		371D192E17271304009D0D7D /* FirefeedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirefeedSearch.h; sourceTree = "<group>"; };
 		371D192F17271304009D0D7D /* FirefeedSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirefeedSearch.m; sourceTree = "<group>"; };
 		374F0480178258B7000CB1F5 /* FirebaseSimpleLogin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseSimpleLogin.framework; sourceTree = "<group>"; };
-		374F048417837EFC000CB1F5 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		374F048617861355000CB1F5 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		37550CC817380C1A008E2928 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		37550CCC17383A73008E2928 /* logo-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-114.png"; sourceTree = "<group>"; };
 		375C5E28170B8F2400BB1CE9 /* iFirefeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iFirefeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +197,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				374F048717861355000CB1F5 /* Firebase.framework in Frameworks */,
 				37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */,
 				371145731745B71400C26B5B /* libsqlite3.dylib in Frameworks */,
 				371145711745B6F200C26B5B /* AdSupport.framework in Frameworks */,
@@ -213,7 +214,6 @@
 				375C5E30170B8F2400BB1CE9 /* CoreGraphics.framework in Frameworks */,
 				37550CC917380C1A008E2928 /* Crashlytics.framework in Frameworks */,
 				374F0481178258B7000CB1F5 /* FirebaseSimpleLogin.framework in Frameworks */,
-				374F048517837EFC000CB1F5 /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,7 +243,7 @@
 		375C5E2A170B8F2400BB1CE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				374F048417837EFC000CB1F5 /* Firebase.framework */,
+				374F048617861355000CB1F5 /* Firebase.framework */,
 				374F0480178258B7000CB1F5 /* FirebaseSimpleLogin.framework */,
 				37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */,
 				37E5788D17726D3700E17C7D /* FacebookSDK.framework */,

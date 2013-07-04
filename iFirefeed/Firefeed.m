@@ -372,7 +372,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 
     ffbt_void_nserror userBlock = [block copy];
     __weak Firefeed* weakSelf = self;
-    [sparkRef setValue:spark withCompletionBlock:^(NSError *error) {
+    [sparkRef setValue:spark withCompletionBlock:^(NSError *error, Firebase* ref) {
         if (error) {
             userBlock(error);
         } else if (weakSelf) {
@@ -419,7 +419,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     Firebase* userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:self.loggedInUser.userId];
 
     Firebase* followingRef = [[userRef childByAppendingPath:@"following"] childByAppendingPath:userId];
-    [followingRef setValue:@YES withCompletionBlock:^(NSError *error) {
+    [followingRef setValue:@YES withCompletionBlock:^(NSError *error, Firebase* ref) {
         Firebase* followerRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:userId];
 
         [[[followerRef childByAppendingPath:@"followers"] childByAppendingPath:self.loggedInUser.userId] setValue:@YES];
@@ -441,7 +441,7 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     Firebase* userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:self.loggedInUser.userId];
 
     Firebase* followingRef = [[userRef childByAppendingPath:@"following"] childByAppendingPath:userId];
-    [followingRef removeValueWithCompletionBlock:^(NSError *error) {
+    [followingRef removeValueWithCompletionBlock:^(NSError *error, Firebase* ref) {
         Firebase* followerRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:userId];
 
         [[[followerRef childByAppendingPath:@"followers"] childByAppendingPath:self.loggedInUser.userId] removeValue];
