@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Crashlytics startWithAPIKey:@"19a9a2eacc330393b337b28ae42dcc90041d6156"];
+    //[Crashlytics startWithAPIKey:@"<crashlytics key>"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     // Quick printout of the various versions and some basic info about the app
