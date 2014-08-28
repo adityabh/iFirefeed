@@ -186,7 +186,7 @@
 
 - (void) refreshUserData:(FirefeedUser *)user {
     // handle an update to this user's data.
-    [self.profileImage setImageWithURL:user.picUrl placeholderImage:[UIImage imageNamed:@"placekitten_large.png"]];
+    [self.profileImage sd_setImageWithURL:user.picUrl placeholderImage:[UIImage imageNamed:@"placekitten_large.png"]];
     self.nameLabel.text = user.fullName;
     NSString* bio = user.bio;
     if (bio && ![bio isEqualToString:@""]) {

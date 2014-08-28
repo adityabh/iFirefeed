@@ -335,7 +335,7 @@
     cell.backgroundColor = [UIColor clearColor];
     SearchResult* result = [self.currentResults objectAtIndex:indexPath.row];
     cell.textLabel.text = result.displayName;
-    [cell.imageView setImageWithURL:result.picURLSmall placeholderImage:[UIImage imageNamed:@"placekitten.png"]];
+    [cell.imageView sd_setImageWithURL:result.picURLSmall placeholderImage:[UIImage imageNamed:@"placekitten.png"]];
     return cell;
 }
 

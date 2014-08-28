@@ -31,7 +31,7 @@
 - (void) configureForUser:(FirefeedUser *)user {
     // Bind a FirefeedUser to this view
     self.nameLabel.text = user.fullName;
-    [self.profilePic setImageWithURL:user.picURLSmall placeholderImage:[UIImage imageNamed:@"placekitten.png"]];
+    [self.profilePic sd_setImageWithURL:user.picURLSmall placeholderImage:[UIImage imageNamed:@"placekitten.png"]];
     self.bioText.contentOffset = CGPointZero;
     self.bioText.contentInset = UIEdgeInsetsMake(-10, -5, -5, -5);
     self.bioText.text = user.bio;
