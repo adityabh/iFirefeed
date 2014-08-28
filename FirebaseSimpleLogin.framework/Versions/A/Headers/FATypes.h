@@ -44,7 +44,9 @@ typedef enum {
     FAProviderInvalid = -1,
     FAProviderPassword = 1,
     FAProviderFacebook = 2,
-    FAProviderTwitter = 3
+    FAProviderTwitter = 3,
+    FAProviderAnonymous = 4,
+    FAProviderGoogle = 5
 } FAProvider;
 
 #endif

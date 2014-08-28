@@ -79,6 +79,8 @@
 		379D07B01717934F00FB2335 /* MOGlassButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 379D07AE1717934F00FB2335 /* MOGlassButton.m */; };
 		37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E5788D17726D3700E17C7D /* FacebookSDK.framework */; };
 		37E5789017726D5C00E17C7D /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */; };
+		5FDCEBC419AFEF7200C13EA1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDCEBC319AFEF7200C13EA1 /* SystemConfiguration.framework */; };
+		5FDCEBC619AFEF7900C13EA1 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDCEBC519AFEF7900C13EA1 /* libc++.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +192,8 @@
 		379D07AE1717934F00FB2335 /* MOGlassButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOGlassButton.m; sourceTree = "<group>"; };
 		37E5788D17726D3700E17C7D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = FacebookSDK.framework/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		5FDCEBC319AFEF7200C13EA1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		5FDCEBC519AFEF7900C13EA1 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +201,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FDCEBC619AFEF7900C13EA1 /* libc++.dylib in Frameworks */,
+				5FDCEBC419AFEF7200C13EA1 /* SystemConfiguration.framework in Frameworks */,
 				374F048717861355000CB1F5 /* Firebase.framework in Frameworks */,
 				37E5788E17726D3700E17C7D /* FacebookSDK.framework in Frameworks */,
 				371145731745B71400C26B5B /* libsqlite3.dylib in Frameworks */,
@@ -243,6 +249,8 @@
 		375C5E2A170B8F2400BB1CE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FDCEBC519AFEF7900C13EA1 /* libc++.dylib */,
+				5FDCEBC319AFEF7200C13EA1 /* SystemConfiguration.framework */,
 				374F048617861355000CB1F5 /* Firebase.framework */,
 				374F0480178258B7000CB1F5 /* FirebaseSimpleLogin.framework */,
 				37E5788F17726D5C00E17C7D /* FacebookSDKResources.bundle */,

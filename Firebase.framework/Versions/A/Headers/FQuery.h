@@ -88,7 +88,7 @@ typedef NSUInteger FirebaseHandle;
  * @param cancelBlock The block that should be called if this client no longer has permission to receive these events
  * @return A handle used to unregister this block later using removeObserverWithHandle:
  */
-- (FirebaseHandle) observeEventType:(FEventType)eventType withBlock:(void (^)(FDataSnapshot* snapshot))block withCancelBlock:(void (^)(void))cancelBlock;
+- (FirebaseHandle) observeEventType:(FEventType)eventType withBlock:(void (^)(FDataSnapshot* snapshot))block withCancelBlock:(void (^)(NSError* error))cancelBlock;
 
 
 /**
@@ -106,7 +106,7 @@ typedef NSUInteger FirebaseHandle;
  * @param cancelBlock The block that should be called if this client no longer has permission to receive these events
  * @return A handle used to unregister this block later using removeObserverWithHandle:
  */
-- (FirebaseHandle) observeEventType:(FEventType)eventType andPreviousSiblingNameWithBlock:(void (^)(FDataSnapshot* snapshot, NSString* prevName))block withCancelBlock:(void (^)(void))cancelBlock;
+- (FirebaseHandle) observeEventType:(FEventType)eventType andPreviousSiblingNameWithBlock:(void (^)(FDataSnapshot* snapshot, NSString* prevName))block withCancelBlock:(void (^)(NSError* error))cancelBlock;
 
 
 /**
@@ -137,7 +137,7 @@ typedef NSUInteger FirebaseHandle;
  * @param block The block that should be called with initial data and updates.
  * @param cancelBlock The block that will be called if you don't have permission to access this data
  */
-- (void) observeSingleEventOfType:(FEventType)eventType withBlock:(void (^)(FDataSnapshot* snapshot))block withCancelBlock:(void (^)(void))cancelBlock;
+- (void) observeSingleEventOfType:(FEventType)eventType withBlock:(void (^)(FDataSnapshot* snapshot))block withCancelBlock:(void (^)(NSError* error))cancelBlock;
 
 
 /**
@@ -150,7 +150,7 @@ typedef NSUInteger FirebaseHandle;
  * @param block The block that should be called with initial data and updates.
  * @param cancelBlock The block that will be called if you don't have permission to access this data
  */
-- (void) observeSingleEventOfType:(FEventType)eventType andPreviousSiblingNameWithBlock:(void (^)(FDataSnapshot* snapshot, NSString* prevName))block withCancelBlock:(void (^)(void))cancelBlock;
+- (void) observeSingleEventOfType:(FEventType)eventType andPreviousSiblingNameWithBlock:(void (^)(FDataSnapshot* snapshot, NSString* prevName))block withCancelBlock:(void (^)(NSError* error))cancelBlock;
 
 /** @name Detaching observers */
 
@@ -215,6 +215,30 @@ typedef NSUInteger FirebaseHandle;
  * @return An FQuery instance, limited to data with priority less than endPriority or equal to endPriority and with a name less than or equal to childName
  */
 - (FQuery *) queryEndingAtPriority:(id)endPriority andChildName:(NSString *)childName;
+
+
+/**
+* queryEqualToPriority: is used to generate a reference to a limited view of the data at this location.
+* The FQuery instance returned by queryEqualToPriority: will respond to events at nodes with a priority equal to
+* supplied argument.
+*
+* @param priority The priority that the data returned by this FQuery will have
+* @return An Fquery instance, limited to data with the supplied priority.
+*/
+- (FQuery *) queryEqualToPriority:(id)priority;
+
+
+/**
+* queryEqualToPriority:andChildName: is used to generate a reference to a limited view of the data at this location.
+* The FQuery instance returned by queryEqualToPriority:andChildNAme will respond to events at nodes with a priority
+* equal to the supplied argument with a name equal to childName. There will be at most one node that matches because
+* child names are unique.
+*
+* @param priority The priority that the data returned by this FQuery will have
+* @param childName The name of nodes with the right priority
+* @return An FQuery instance, limited to data with the supplied priority and the name.
+*/
+- (FQuery *) queryEqualToPriority:(id)priority andChildName:(NSString *)childName;
 
 
 /**

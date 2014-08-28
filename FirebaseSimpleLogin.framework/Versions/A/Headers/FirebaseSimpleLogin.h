@@ -49,6 +49,15 @@
 - (id) initWithRef:(Firebase *)ref;
 
 
+/**
+ * You must initialize the Simple Login with a Firebase reference. The Simple Login client will use that reference to authenticate to the Firebase servers
+ *
+ * @param ref A valid Firebase reference
+ @ @param options A dictionary of options to respect (i.e. @{ @"flag": @YES } )
+ * @return An initialized instance of FirebaseSimpleLogin
+ */
+- (id) initWithRef:(Firebase *)aRef andOptions:(NSDictionary *)options;
+
 
 /** @name Checking current authentication status */
 
@@ -112,6 +121,14 @@
  */
 - (void) changePasswordForEmail:(NSString *)email oldPassword:(NSString *)oldPassword newPassword:(NSString *)newPassword completionBlock:(void (^)(NSError* error, BOOL success))block;
 
+/**
+ * Send a password reset email to the owner of the account with the given email. Results are reported to the supplied block.
+ *
+ * @param email The email of the account to be removed
+ * @param block A block to receive the results of the operation
+ */
+- (void) sendPasswordResetForEmail:(NSString *)email andCompletionBlock:(void (^)(NSError* error, BOOL success))block;
+
 
 /** @name Facebook authentication methods */
 
@@ -128,7 +145,35 @@
 
 - (void) createFacebookUserWithToken:(NSString *)token appId:(NSString *)appId withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
 
-/** @name Twitter authentication methdos */
+/**
+ * Attempts to log the user in to the Facebook app with the specified access token. The block will be called with the results of the attempt.
+ *
+ * @param accessToken The Facebook access token to use when logging in
+ * @param block A block that will be called with the results of the login attempt
+ */
+- (void) loginWithFacebookWithAccessToken:(NSString *)accessToken withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
+
+
+/** @name Google authentication methods */
+
+/**
+ * Attempts to log the user in to the Google app with the specified access token. The block will be called with the results of the attempt.
+ *
+ * @param accessToken The Google access token to use when logging in
+ * @param block A block that will be called with the results of the login attempt
+ */
+- (void) loginToGoogleWithAccessToken:(NSString *)accessToken withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
+
+/**
+ * Attempts to log the user in to the Google app with the specified access token. The block will be called with the results of the attempt.
+ *
+ * @param accessToken The Google access token to use when logging in
+ * @param block A block that will be called with the results of the login attempt
+ */
+- (void) loginWithGoogleWithAccessToken:(NSString *)accessToken withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
+
+
+/** @name Twitter authentication methods */
 
 
 /**
@@ -142,6 +187,28 @@
  */
 - (void) loginToTwitterAppWithId:(NSString *)appId multipleAccountsHandler:(int (^)(NSArray* usernames))accountSelection withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
 
+/**
+ * Attempts to log the user in to the Twitter app with the specified access token, access token secret, and Twitter user id. The
+ * block will be called with the results of the attempt.
+ *
+ * @param accessToken The Twitter access token to use when logging in
+ * @param accessTokenSecret The Twitter access token secret to use when logging in
+ * @param twitterUserId The Twitter user id to use when logging in
+ * @param block A block that will be called with the results of the login attempt
+ */
+
+- (void) loginWithTwitterWithAccessToken:(NSString *)accessToken andAccessTokenSecret:(NSString *)accessTokenSecret
+         andTwitterUserId:(NSString *)twitterUserId withCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
+
+/** @name Anonymous authentication methods */
+
+
+/**
+ * Attempts to log the user in anonymously. The block will receive the results of the attempt.
+ *
+ * @param block A block to receive the results of the login attempt.
+ */
+- (void) loginAnonymouslywithCompletionBlock:(void (^)(NSError* error, FAUser* user))block;
 
 
 /** @name Global configuration and settings */
