@@ -8,7 +8,6 @@
 
 #import "Firefeed.h"
 #import <Firebase/Firebase.h>
-#import <FirebaseSimpleLogin/FirebaseSimpleLogin.h>
 #import "FirefeedAuth.h"
 #import "FirefeedSpark.h"
 
@@ -50,7 +49,6 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
 + (void) logDiagnostics {
     // Quick dump of some relevant info about the app
     NSLog(@"Running w/ Firebase %@", [Firebase sdkVersion]);
-    NSLog(@"Running w/ FirebaseSimpleLogin %@", [FirebaseSimpleLogin sdkVersion]);
     NSLog(@"bundle id: %@", [NSBundle mainBundle].bundleIdentifier);
 }
 
@@ -70,11 +68,9 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
         self.serverTimeOffset = 0;
 
         // Auth handled via a global singleton. Prevents modules squashing eachother
-        [FirefeedAuth watchAuthForRef:self.root withBlock:^(NSError *error, FAUser *user) {
+        [FirefeedAuth watchAuthForRef:self.root withBlock:^(NSError *error, FAuthData *user) {
             if (error) {
-                if (error.code == FAErrorAccountNotFound) {
-                    NSLog(@"ERROR: %@", error);
-                }
+                NSLog(@"AUTHENTICATION ERROR: %@", error);
                 [weakSelf.delegate loginAttemptDidFail];
             } else {
                 [weakSelf onAuthStatus:user];
@@ -167,16 +163,16 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
     [FirefeedAuth logoutRef:self.root];
 }
 
-- (void) onAuthStatus:(FAUser *)user {
+- (void) onAuthStatus:(FAuthData *)user {
     if (user) {
         // A user is logged in
-        NSString* fullName = [user.thirdPartyUserData objectForKey:@"name"];
-        NSString* firstName = [user.thirdPartyUserData objectForKey:@"first_name"];
-        NSString* lastName = [user.thirdPartyUserData objectForKey:@"last_name"];
-        self.userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:user.userId];
+        NSString* fullName = [user.providerData[@"cachedUserProfile"] objectForKey:@"name"];
+        NSString* firstName = [user.providerData[@"cachedUserProfile"] objectForKey:@"first_name"];
+        NSString* lastName = [user.providerData[@"cachedUserProfile"] objectForKey:@"last_name"];
+        self.userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:user.uid];
         // We shouldn't get this if we already have a user...
         assert(self.loggedInUser == nil);
-        self.loggedInUser = [FirefeedUser loadFromRoot:self.root withUserData:@{@"firstName": firstName, @"lastName": lastName, @"fullName": fullName, @"userId": user.userId} completionBlock:^(FirefeedUser *user) {
+        self.loggedInUser = [FirefeedUser loadFromRoot:self.root withUserData:@{@"firstName": firstName, @"lastName": lastName, @"fullName": fullName, @"userId": user.uid} completionBlock:^(FirefeedUser *user) {
             [user updateFromRoot:self.root];
             self.loggedInUser.delegate = self;
             [self.delegate loginStateDidChange:user];
