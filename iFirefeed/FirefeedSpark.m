@@ -60,7 +60,15 @@ typedef void (^ffbt_void_ffspark)(FirefeedSpark* spark);
 }
 
 - (NSURL *) authorPicURL {
-    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture/?return_ssl_resources=1&width=48&height=48", self.authorId]];
+    NSString *author;
+    // Check for uid vs id, so we can know how to query the facebook API for the profile picture
+    if ([self.authorId containsString:@"facebook:"]) {
+        NSArray *stringPieces = [self.authorId componentsSeparatedByString:@":"];
+        author = stringPieces[1];
+    } else {
+        author = self.authorId;
+    }
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/v2.1/%@/picture/?return_ssl_resources=1&width=48&height=48", author]];
 }
 
 @end
