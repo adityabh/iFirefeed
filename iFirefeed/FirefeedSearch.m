@@ -75,7 +75,15 @@
 }
 
 - (NSURL *) picURLSmall {
-    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture/?return_ssl_resources=1&width=48&height=48", self.userId]];
+    NSString *author;
+    // Check for uid vs id, so we can know how to query the facebook API for the profile picture
+    if ([self.userId containsString:@"facebook:"]) {
+        NSArray *stringPieces = [self.userId componentsSeparatedByString:@":"];
+        author = stringPieces[1];
+    } else {
+        author = self.userId;
+    }
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/v2.1/%@/picture/?return_ssl_resources=1&width=48&height=48", self.userId]];
 }
 @end
 
