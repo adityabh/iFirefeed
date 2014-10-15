@@ -171,7 +171,6 @@ typedef void (^ffbt_void_nserror_dict)(NSError* err, NSDictionary* dict);
         NSString* lastName = [user.providerData[@"cachedUserProfile"] objectForKey:@"last_name"];
         self.userRef = [[self.root childByAppendingPath:@"users"] childByAppendingPath:user.uid];
         // We shouldn't get this if we already have a user...
-        assert(self.loggedInUser == nil);
         self.loggedInUser = [FirefeedUser loadFromRoot:self.root withUserData:@{@"firstName": firstName, @"lastName": lastName, @"fullName": fullName, @"userId": user.uid} completionBlock:^(FirefeedUser *user) {
             [user updateFromRoot:self.root];
             self.loggedInUser.delegate = self;
